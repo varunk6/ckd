@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="kLeftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF8A00" />
+      <stop offset="100%" stop-color="#E05A00" />
+    </linearGradient>
+    <linearGradient id="kRightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B00" />
+      <stop offset="100%" stop-color="#C84800" />
+    </linearGradient>
+    <linearGradient id="orangeArcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF8A00" />
+      <stop offset="100%" stop-color="#FF5500" />
+    </linearGradient>
+    <linearGradient id="darkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Circle Arcs -->
+  <path d="M 190,20 A 160,160 0 0,0 210,340" fill="none" stroke="url(#darkGrad)" stroke-width="14" stroke-linecap="round" />
+  <path d="M 210,20 A 160,160 0 0,1 350,180" fill="none" stroke="url(#orangeArcGrad)" stroke-width="14" stroke-linecap="round" />
+
+  <!-- Central Renal Anatomy -->
+  <g transform="translate(60, 45)">
+    <!-- Left Kidney -->
+    <path d="M 95,50 C 60,50 35,80 35,130 C 35,185 60,225 95,225 C 120,225 125,200 115,180 C 105,160 105,115 118,95 C 126,80 120,50 95,50 Z" fill="url(#kLeftGrad)" />
+    <path d="M 75,70 C 65,75 55,100 65,130 C 70,145 65,180 85,205" fill="none" stroke="#FFA742" stroke-width="5" stroke-linecap="round" opacity="0.6" />
+
+    <!-- Right Kidney -->
+    <path d="M 185,50 C 220,50 245,80 245,130 C 245,185 220,225 185,225 C 160,225 155,200 165,180 C 175,160 175,115 162,95 C 154,80 160,50 185,50 Z" fill="url(#kRightGrad)" />
+    <path d="M 205,70 C 215,75 225,100 215,130 C 210,145 215,180 195,205" fill="none" stroke="#FFC078" stroke-width="5" stroke-linecap="round" opacity="0.6" />
+
+    <!-- Center Ureter/Vessels -->
+    <path d="M 122,105 L 122,235 M 132,105 L 132,235 M 148,105 L 148,235 M 158,105 L 158,235" fill="none" stroke="#E05A00" stroke-width="7" stroke-linecap="round" />
+  </g>
+
+  <!-- Pulse Line -->
+  <path d="M 120,310 L 175,310 L 185,295 L 195,325 L 210,270 L 225,335 L 240,300 L 250,310 L 280,310" fill="none" stroke="#FF6B00" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Health Shield Badge -->
+  <g transform="translate(295, 235)">
+    <path d="M 35,0 L 70,12 C 70,55 50,85 35,95 C 20,85 0,55 0,12 Z" fill="url(#darkGrad)" stroke="#FFFFFF" stroke-width="3" />
+    <path d="M 35,26 L 35,64 M 16,45 L 54,45" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" />
+  </g>
+</svg>

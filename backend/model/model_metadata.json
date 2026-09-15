@@ -1,0 +1,806 @@
+{
+  "project_title": "Explainable Multi-Model Machine Learning Framework for Early Chronic Kidney Disease Prediction",
+  "timestamp": "2026-09-12 10:14:16",
+  "best_model_name": "Naive Bayes",
+  "class_balancing_method": "smote",
+  "class_balancing_label": "SMOTE (Synthetic Minority Over-sampling Technique)",
+  "cv_folds": 5,
+  "total_records": 60,
+  "total_features": 24,
+  "transformed_features_count": 34,
+  "best_model_metrics": {
+    "model_name": "Naive Bayes",
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "roc_auc": 1.0,
+    "training_time_sec": 0.086,
+    "confusion_matrix": {
+      "tp": 30,
+      "tn": 30,
+      "fp": 0,
+      "fn": 0
+    },
+    "roc_curve": [
+      {
+        "fpr": 0.0,
+        "tpr": 0.0
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 1.0
+      },
+      {
+        "fpr": 1.0,
+        "tpr": 1.0
+      }
+    ]
+  },
+  "all_models_comparison": [
+    {
+      "model_name": "Logistic Regression",
+      "accuracy": 0.9833,
+      "precision": 1.0,
+      "recall": 0.9667,
+      "f1_score": 0.9818,
+      "roc_auc": 1.0,
+      "training_time_sec": 0.059,
+      "confusion_matrix": {
+        "tp": 29,
+        "tn": 30,
+        "fp": 0,
+        "fn": 1
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.033
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ]
+    },
+    {
+      "model_name": "Decision Tree",
+      "accuracy": 0.9333,
+      "precision": 0.9667,
+      "recall": 0.9,
+      "f1_score": 0.9303,
+      "roc_auc": 0.9333,
+      "training_time_sec": 0.041,
+      "confusion_matrix": {
+        "tp": 27,
+        "tn": 29,
+        "fp": 1,
+        "fn": 3
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.033,
+          "tpr": 0.9
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ]
+    },
+    {
+      "model_name": "Random Forest",
+      "accuracy": 0.9667,
+      "precision": 1.0,
+      "recall": 0.9333,
+      "f1_score": 0.96,
+      "roc_auc": 1.0,
+      "training_time_sec": 0.625,
+      "confusion_matrix": {
+        "tp": 28,
+        "tn": 30,
+        "fp": 0,
+        "fn": 2
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.267
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.367
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.4
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.5
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.567
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.667
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.733
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.967
+        },
+        {
+          "fpr": 0.033,
+          "tpr": 0.967
+        },
+        {
+          "fpr": 0.033,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.067,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.133,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.4,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.467,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.6,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.7,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.967,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ]
+    },
+    {
+      "model_name": "SVM",
+      "accuracy": 0.9833,
+      "precision": 1.0,
+      "recall": 0.9667,
+      "f1_score": 0.9818,
+      "roc_auc": 1.0,
+      "training_time_sec": 0.117,
+      "confusion_matrix": {
+        "tp": 29,
+        "tn": 30,
+        "fp": 0,
+        "fn": 1
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.033
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.967
+        },
+        {
+          "fpr": 0.033,
+          "tpr": 0.967
+        },
+        {
+          "fpr": 0.033,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ]
+    },
+    {
+      "model_name": "KNN",
+      "accuracy": 0.8333,
+      "precision": 1.0,
+      "recall": 0.6667,
+      "f1_score": 0.7836,
+      "roc_auc": 0.9833,
+      "training_time_sec": 4.348,
+      "confusion_matrix": {
+        "tp": 20,
+        "tn": 30,
+        "fp": 0,
+        "fn": 10
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.533
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.667
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.767
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.967
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ]
+    },
+    {
+      "model_name": "Naive Bayes",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "roc_auc": 1.0,
+      "training_time_sec": 0.086,
+      "confusion_matrix": {
+        "tp": 30,
+        "tn": 30,
+        "fp": 0,
+        "fn": 0
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ]
+    },
+    {
+      "model_name": "XGBoost",
+      "accuracy": 0.9167,
+      "precision": 0.9429,
+      "recall": 0.9,
+      "f1_score": 0.911,
+      "roc_auc": 1.0,
+      "training_time_sec": 2.405,
+      "confusion_matrix": {
+        "tp": 27,
+        "tn": 28,
+        "fp": 2,
+        "fn": 3
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.1
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.233
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.267
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.4
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.633
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.7
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.8
+        },
+        {
+          "fpr": 0.033,
+          "tpr": 0.8
+        },
+        {
+          "fpr": 0.033,
+          "tpr": 0.867
+        },
+        {
+          "fpr": 0.067,
+          "tpr": 0.867
+        },
+        {
+          "fpr": 0.067,
+          "tpr": 0.933
+        },
+        {
+          "fpr": 0.367,
+          "tpr": 0.933
+        },
+        {
+          "fpr": 0.367,
+          "tpr": 0.967
+        },
+        {
+          "fpr": 0.4,
+          "tpr": 0.967
+        },
+        {
+          "fpr": 0.4,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.633,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.833,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ]
+    },
+    {
+      "model_name": "Neural Network",
+      "accuracy": 0.9833,
+      "precision": 1.0,
+      "recall": 0.9667,
+      "f1_score": 0.9818,
+      "roc_auc": 1.0,
+      "training_time_sec": 0.519,
+      "confusion_matrix": {
+        "tp": 29,
+        "tn": 30,
+        "fp": 0,
+        "fn": 1
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.033
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.967
+        },
+        {
+          "fpr": 0.033,
+          "tpr": 0.967
+        },
+        {
+          "fpr": 0.033,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ]
+    }
+  ],
+  "top_features": [
+    "hemo",
+    "htn_yes",
+    "al",
+    "dm_yes",
+    "htn_no",
+    "sg",
+    "pcv",
+    "rc",
+    "dm_no",
+    "pc_abnormal",
+    "appet_poor",
+    "bu",
+    "sc",
+    "pe_yes",
+    "pc_normal"
+  ],
+  "feature_selection_summary": [
+    {
+      "feature": "hemo",
+      "correlation": 0.7770762355578466,
+      "chi2_score": 2.578947368421053,
+      "variance": 0.9999999999999996,
+      "rfe_rank": 1,
+      "lasso_coef": 1.4792658642672085,
+      "mutual_info": 0.5570366689857118,
+      "composite_score": 0.7807017543859649
+    },
+    {
+      "feature": "htn_yes",
+      "correlation": 0.7337993857053433,
+      "chi2_score": 21.0,
+      "variance": 0.22750000000000029,
+      "rfe_rank": 1,
+      "lasso_coef": 0.9881948404254394,
+      "mutual_info": 0.27809960742621254,
+      "composite_score": 0.7778967457313279
+    },
+    {
+      "feature": "al",
+      "correlation": 0.6814052564817894,
+      "chi2_score": 13.749999999999998,
+      "variance": 0.9999999999999994,
+      "rfe_rank": 1,
+      "lasso_coef": 0.5617869532869088,
+      "mutual_info": 0.35046057510864004,
+      "composite_score": 0.6351427967029678
+    },
+    {
+      "feature": "dm_yes",
+      "correlation": 0.654653670707978,
+      "chi2_score": 18.0,
+      "variance": 0.20999999999999994,
+      "rfe_rank": 1,
+      "lasso_coef": 0.25694796684132587,
+      "mutual_info": 0.24638219978026488,
+      "composite_score": 0.5789021828063744
+    },
+    {
+      "feature": "htn_no",
+      "correlation": 0.7337993857053433,
+      "chi2_score": 11.307692307692308,
+      "variance": 0.22750000000000029,
+      "rfe_rank": 1,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.3204573276786695,
+      "composite_score": 0.5145147767334146
+    },
+    {
+      "feature": "sg",
+      "correlation": 0.5987243137499624,
+      "chi2_score": 2.152515723270451,
+      "variance": 1.0000000000000009,
+      "rfe_rank": 1,
+      "lasso_coef": 0.856779210341806,
+      "mutual_info": 0.29953538238197663,
+      "composite_score": 0.4974765963724004
+    },
+    {
+      "feature": "pcv",
+      "correlation": 0.7175061660951098,
+      "chi2_score": 2.086902545003106,
+      "variance": 1.0000000000000002,
+      "rfe_rank": 1,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.45267308482114976,
+      "composite_score": 0.458840528664478
+    },
+    {
+      "feature": "rc",
+      "correlation": 0.6663746532200391,
+      "chi2_score": 2.1257861635220143,
+      "variance": 0.9999999999999999,
+      "rfe_rank": 1,
+      "lasso_coef": 0.26166738140493595,
+      "mutual_info": 0.3670132748598691,
+      "composite_score": 0.4486315478763352
+    },
+    {
+      "feature": "dm_no",
+      "correlation": 0.654653670707978,
+      "chi2_score": 7.714285714285714,
+      "variance": 0.20999999999999994,
+      "rfe_rank": 1,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.2698023444504096,
+      "composite_score": 0.4235393326631594
+    },
+    {
+      "feature": "pc_abnormal",
+      "correlation": 0.5259237061407781,
+      "chi2_score": 13.0,
+      "variance": 0.16972222222222194,
+      "rfe_rank": 15,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.18179308519115023,
+      "composite_score": 0.4055507961067514
+    },
+    {
+      "feature": "appet_poor",
+      "correlation": 0.5000000000000002,
+      "chi2_score": 12.0,
+      "variance": 0.1599999999999996,
+      "rfe_rank": 3,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.21795849385655863,
+      "composite_score": 0.4015370532604665
+    },
+    {
+      "feature": "bu",
+      "correlation": 0.5282095959751917,
+      "chi2_score": 3.7395073193382045,
+      "variance": 0.9999999999999999,
+      "rfe_rank": 1,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.2429806870772817,
+      "composite_score": 0.323503458407623
+    },
+    {
+      "feature": "sc",
+      "correlation": 0.26833082221739574,
+      "chi2_score": 1.8314154320686122,
+      "variance": 1.0000000000000004,
+      "rfe_rank": 1,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.4796578014108772,
+      "composite_score": 0.32340171738238616
+    },
+    {
+      "feature": "pe_yes",
+      "correlation": 0.4200840252084034,
+      "chi2_score": 9.0,
+      "variance": 0.12749999999999997,
+      "rfe_rank": 8,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.16174715889522395,
+      "composite_score": 0.31488445633594664
+    },
+    {
+      "feature": "pc_normal",
+      "correlation": 0.5259237061407781,
+      "chi2_score": 3.595744680851064,
+      "variance": 0.16972222222222194,
+      "rfe_rank": 16,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.1370973805689748,
+      "composite_score": 0.273535787506414
+    },
+    {
+      "feature": "su",
+      "correlation": 0.3692744729379989,
+      "chi2_score": 6.0,
+      "variance": 0.9999999999999977,
+      "rfe_rank": 18,
+      "lasso_coef": 0.34047089785673135,
+      "mutual_info": 0.05440690655497149,
+      "composite_score": 0.272189623257725
+    },
+    {
+      "feature": "cad_yes",
+      "correlation": 0.3922322702763686,
+      "chi2_score": 8.0,
+      "variance": 0.11555555555555565,
+      "rfe_rank": 9,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.11216322431128933,
+      "composite_score": 0.2717658196842154
+    },
+    {
+      "feature": "ane_yes",
+      "correlation": 0.42008402520840343,
+      "chi2_score": 9.0,
+      "variance": 0.12749999999999997,
+      "rfe_rank": 2,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.04892428732235232,
+      "composite_score": 0.26424915804476473
+    },
+    {
+      "feature": "pcc_present",
+      "correlation": 0.4200840252084034,
+      "chi2_score": 9.0,
+      "variance": 0.12749999999999997,
+      "rfe_rank": 14,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.04674114638921134,
+      "composite_score": 0.2632693567791154
+    },
+    {
+      "feature": "appet_good",
+      "correlation": 0.5000000000000002,
+      "chi2_score": 3.0,
+      "variance": 0.1599999999999996,
+      "rfe_rank": 1,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.13041719256525774,
+      "composite_score": 0.2551053547516084
+    },
+    {
+      "feature": "sod",
+      "correlation": 0.2631034709599183,
+      "chi2_score": 0.07549161049747634,
+      "variance": 0.9999999999999993,
+      "rfe_rank": 1,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.322932038830104,
+      "composite_score": 0.23047705650872746
+    },
+    {
+      "feature": "ane_no",
+      "correlation": 0.42008402520840343,
+      "chi2_score": 1.588235294117647,
+      "variance": 0.12749999999999997,
+      "rfe_rank": 4,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.1608222504703154,
+      "composite_score": 0.22623406009109465
+    },
+    {
+      "feature": "pcc_notpresent",
+      "correlation": 0.4200840252084034,
+      "chi2_score": 1.588235294117647,
+      "variance": 0.12749999999999997,
+      "rfe_rank": 13,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.13736344076150586,
+      "composite_score": 0.21570566446880782
+    },
+    {
+      "feature": "pe_no",
+      "correlation": 0.4200840252084034,
+      "chi2_score": 1.588235294117647,
+      "variance": 0.12749999999999997,
+      "rfe_rank": 7,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.13587534552341052,
+      "composite_score": 0.21503780213543355
+    },
+    {
+      "feature": "cad_no",
+      "correlation": 0.39223227027636726,
+      "chi2_score": 1.2307692307692308,
+      "variance": 0.11555555555555565,
+      "rfe_rank": 10,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.1050670797151445,
+      "composite_score": 0.1879949646518372
+    },
+    {
+      "feature": "bgr",
+      "correlation": 0.35068902670413954,
+      "chi2_score": 1.9577092406177825,
+      "variance": 1.0000000000000004,
+      "rfe_rank": 5,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.09932532147338624,
+      "composite_score": 0.18070685060997732
+    },
+    {
+      "feature": "rbc_abnormal",
+      "correlation": 0.26726124191242506,
+      "chi2_score": 4.0,
+      "variance": 0.0622222222222221,
+      "rfe_rank": 20,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.02821661536468012,
+      "composite_score": 0.1462657173517476
+    },
+    {
+      "feature": "age",
+      "correlation": 0.3077044750426773,
+      "chi2_score": 0.4865321423612713,
+      "variance": 0.9999999999999999,
+      "rfe_rank": 1,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.07600707517719907,
+      "composite_score": 0.1388985907654281
+    },
+    {
+      "feature": "rbc_normal",
+      "correlation": 0.2672612419124242,
+      "chi2_score": 0.2857142857142857,
+      "variance": 0.0622222222222221,
+      "rfe_rank": 19,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.020048857196921954,
+      "composite_score": 0.09838231192186252
+    },
+    {
+      "feature": "ba_present",
+      "correlation": 0.18569533817705225,
+      "chi2_score": 2.0,
+      "variance": 0.03222222222222219,
+      "rfe_rank": 11,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.0179376350856999,
+      "composite_score": 0.09160167023908555
+    },
+    {
+      "feature": "pot",
+      "correlation": 0.0786040646455683,
+      "chi2_score": 0.019515024944889166,
+      "variance": 0.9999999999999997,
+      "rfe_rank": 1,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.11541307631114117,
+      "composite_score": 0.07731851485039622
+    },
+    {
+      "feature": "ba_notpresent",
+      "correlation": 0.18569533817705172,
+      "chi2_score": 0.06896551724137931,
+      "variance": 0.03222222222222219,
+      "rfe_rank": 12,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.0,
+      "composite_score": 0.06056269129853262
+    },
+    {
+      "feature": "bp",
+      "correlation": 0.04992378572442072,
+      "chi2_score": 0.011464968152866423,
+      "variance": 1.0000000000000002,
+      "rfe_rank": 17,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.038602017000082034,
+      "composite_score": 0.03352262584022059
+    },
+    {
+      "feature": "wc",
+      "correlation": 0.009719444402985337,
+      "chi2_score": 0.0004698011801405892,
+      "variance": 0.9999999999999997,
+      "rfe_rank": 6,
+      "lasso_coef": 0.0,
+      "mutual_info": 0.06063549278355773,
+      "composite_score": 0.03034594109529893
+    }
+  ],
+  "class_distribution": {
+    "ckd": 30,
+    "notckd": 30,
+    "total": 60
+  }
+}

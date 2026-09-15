@@ -1,0 +1,29 @@
+{
+  "model_name": "Naive Bayes",
+  "accuracy": 1.0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1_score": 1.0,
+  "roc_auc": 1.0,
+  "training_time_sec": 0.086,
+  "confusion_matrix": {
+    "tp": 30,
+    "tn": 30,
+    "fp": 0,
+    "fn": 0
+  },
+  "roc_curve": [
+    {
+      "fpr": 0.0,
+      "tpr": 0.0
+    },
+    {
+      "fpr": 0.0,
+      "tpr": 1.0
+    },
+    {
+      "fpr": 1.0,
+      "tpr": 1.0
+    }
+  ]
+}

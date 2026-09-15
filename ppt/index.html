@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CKD Predict — First Review Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FF6B00;
+      --primary-dark: #E05D00;
+      --primary-light: #FFF0E5;
+      --bg-white: #FFFFFF;
+      --text-dark: #111827;
+      --text-muted: #4B5563;
+      --text-light: #9CA3AF;
+      --border-gray: #E5E7EB;
+      --card-bg: #F9FAFB;
+      --green: #10B981;
+      --red: #EF4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: #F3F4F6;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-h: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Presentation Deck Container */
+    .deck-container {
+      width: 100%;
+      max-width: 1100px;
+      height: 650px;
+      background: var(--bg-white);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border-gray);
+      margin: 20px auto;
+    }
+
+    /* Slide Item */
+    .slide {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      padding: 40px 48px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--bg-white);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Slide Header */
+    .slide-header {
+      margin-bottom: 24px;
+    }
+
+    .slide-tag {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slide-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .slide-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Image Card */
+    .img-card {
+      border: 1px solid var(--border-gray);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .img-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Flow Diagrams */
+    .flow-horizontal {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: var(--primary-light);
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid #FFE0CC;
+    }
+
+    .flow-node {
+      background: var(--bg-white);
+      border: 1px solid #FFD1B3;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      flex: 1;
+    }
+
+    .flow-node.highlight {
+      background: var(--primary);
+      color: var(--bg-white);
+      border-color: var(--primary);
+    }
+
+    .flow-arrow {
+      color: var(--primary);
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    /* Cards Grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-gray);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title .icon-box {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .card-body {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    ul.clean-list {
+      list-style: none;
+    }
+
+    ul.clean-list li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    ul.clean-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 900;
+    }
+
+    /* Footer Controls */
+    .deck-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: var(--bg-white);
+      border-top: 1px solid var(--border-gray);
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .nav-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .nav-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .nav-btn:disabled {
+      background: var(--border-gray);
+      color: var(--text-light);
+      cursor: not-allowed;
+    }
+
+    .slide-counter {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .disclaimer-banner {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      color: #92400E;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    /* Badges */
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .badge-implemented { background: #D1FAE5; color: #065F46; }
+    .badge-planned { background: #FEF3C7; color: #92400E; }
+
+    @media print {
+      body { background: white; }
+      .deck-container { height: auto; box-shadow: none; border: none; margin: 0; }
+      .slide { display: flex !important; position: relative; height: 100vh; page-break-after: always; }
+      .deck-footer { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container">
+
+    <!-- ================= SLIDE 1 ================= -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-header">
+        <div class="slide-tag">College Project Review 1 — Prototype Review</div>
+        <h1 class="slide-title">Explainable Multi-Model Machine Learning Framework for Early CKD Prediction</h1>
+        <p class="slide-subtitle">"An ML-based system for predicting the likelihood of Chronic Kidney Disease from patient health parameters"</p>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2" style="margin-bottom: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="card">
+              <div class="card-title"><div class="icon-box">📌</div> Project Title</div>
+              <div class="card-body"><strong>CKD Predict</strong> — Research & Screening Prototype</div>
+            </div>
+            <div class="card">
+              <div class="card-title"><div class="icon-box">🔬</div> Research Domain</div>
+              <div class="card-body">Healthcare Analytics + Machine Learning + Explainable AI</div>
+            </div>
+            <div class="card">
+              <div class="card-title"><div class="icon-box">💻</div> Technology Stack</div>
+              <div class="card-body">React 19 + FastAPI + Python 3.14 + scikit-learn + SHAP</div>
+            </div>
+          </div>
+          <div class="img-card">
+            <img src="images/dashboard.jpg" alt="CKD Predict Dashboard UI Mockup">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+          <div class="flow-horizontal" style="padding: 10px 14px;">
+            <div class="flow-node">Patient Health Data</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Data Preprocessing</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Multi-Model Evaluation</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node highlight">CKD Risk Prediction</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Explainable Result</div>
+          </div>
+        </div>
+
+        <div class="disclaimer-banner">
+          ⚠️ <strong>Research Disclaimer:</strong> Educational and research screening prototype — not a medical diagnosis tool.
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 2 ================= -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="slide-tag">Motivation & Vision</div>
+        <h1 class="slide-title">Problem & Objective</h1>
+        <p class="slide-subtitle">Addressing early detection challenges in renal healthcare through machine learning decision support</p>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2" style="margin-bottom: 20px;">
+          <div class="card" style="border-left: 4px solid var(--red);">
+            <div class="card-title" style="color: var(--red);">Clinical Problem</div>
+            <ul class="clean-list">
+              <li>CKD progresses silently over months/years with subtle early symptoms.</li>
+              <li>Manual clinical evaluation across 24+ lab parameters is time-intensive.</li>
+              <li>Traditional models lack transparency ("black-box" decisions), causing clinician hesitancy.</li>
+            </ul>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--primary);">
+            <div class="card-title" style="color: var(--primary);">Prototype Objective</div>
+            <ul class="clean-list">
+              <li>Accept 24 patient clinical blood & urine parameters via modern UI.</li>
+              <li>Automate data scrubbing, median imputation, and StandardScaler normalization.</li>
+              <li>Compare 8 machine learning models using 5-Fold Stratified Cross-Validation.</li>
+              <li>Auto-select champion model and compute SHAP feature attributions.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 11px; font-weight: 800; color: var(--text-dark); margin-bottom: 8px; text-transform: uppercase;">
+            End-to-End System Pipeline
+          </div>
+          <div class="flow-horizontal">
+            <div class="flow-node">Patient Input</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Pipeline Cleaning</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">8 Classifiers</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Champion Model</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node highlight">Risk % & SHAP Explanation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 3 ================= -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="slide-tag">Data Architecture</div>
+        <h1 class="slide-title">Dataset & Patient Parameters</h1>
+        <p class="slide-subtitle">Empirical statistics from the UCI Chronic Kidney Disease benchmark dataset</p>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-3" style="margin-bottom: 16px;">
+          <div class="card" style="text-align: center;">
+            <div style="font-size: 24px; font-weight: 900; color: var(--primary);">400</div>
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-dark);">Total Patient Records</div>
+            <div style="font-size: 10px; color: var(--text-muted);">UCI Repository Cohort</div>
+          </div>
+          <div class="card" style="text-align: center;">
+            <div style="font-size: 24px; font-weight: 900; color: var(--primary);">24</div>
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-dark);">Clinical Attributes</div>
+            <div style="font-size: 10px; color: var(--text-muted);">14 Numerical | 10 Nominal</div>
+          </div>
+          <div class="card" style="text-align: center;">
+            <div style="font-size: 24px; font-weight: 900; color: var(--green);">62.5% / 37.5%</div>
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-dark);">Target Class Ratio</div>
+            <div style="font-size: 10px; color: var(--text-muted);">250 CKD | 150 Normal</div>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 16px;">
+          <div class="card">
+            <div class="card-title">Demographics & Blood</div>
+            <ul class="clean-list">
+              <li>Age (years), Blood Pressure (mmHg)</li>
+              <li>Serum Creatinine, Blood Urea</li>
+              <li>Hemoglobin, PCV, WBC, RBC</li>
+              <li>Sodium, Potassium, Glucose</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Urine & Electrolytes</div>
+            <ul class="clean-list">
+              <li>Specific Gravity (1.005–1.025)</li>
+              <li>Albumin Level (0–5)</li>
+              <li>Sugar Level (0–5)</li>
+              <li>Pus Cell, Pus Cell Clumps, Bacteria</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Medical History & Symptoms</div>
+            <ul class="clean-list">
+              <li>Hypertension (yes/no)</li>
+              <li>Diabetes Mellitus (yes/no)</li>
+              <li>Coronary Artery Disease (yes/no)</li>
+              <li>Appetite, Pedal Edema, Anemia</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flow-horizontal" style="padding: 10px 14px;">
+          <div class="flow-node">Raw UCI CSV</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Missing Value Scrubbing</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Median/Mode Imputation</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">OneHot & Scaling</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight">Clean Feature Matrix</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 4 ================= -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="slide-tag">Core Architecture</div>
+        <h1 class="slide-title">Proposed ML Methodology</h1>
+        <p class="slide-subtitle">Multi-stage machine learning pipeline strictly fitted on training folds to prevent data leakage</p>
+      </div>
+
+      <div class="slide-body">
+        <div class="flow-horizontal" style="margin-bottom: 16px;">
+          <div class="flow-node">Dataset</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Preprocessing</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Feature Selection</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">SMOTE Balancing</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight">Multi-Model Training</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">XAI Attribution</div>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 12px;">
+          <div class="card">
+            <div class="card-title">1. Preprocessing & Scaling <span class="status-badge badge-implemented">Implemented</span></div>
+            <ul class="clean-list">
+              <li>Median Imputer for numerical columns</li>
+              <li>Mode Imputer for categorical columns</li>
+              <li>StandardScaler zero-mean scaling</li>
+              <li>OneHotEncoder categorical expansion</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title">2. Feature Selection <span class="status-badge badge-implemented">Implemented</span></div>
+            <ul class="clean-list">
+              <li>Pearson Correlation Analysis</li>
+              <li>Chi-Square (χ²) Independence Test</li>
+              <li>Recursive Feature Elimination (RFE)</li>
+              <li>LASSO L1 & Mutual Information</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title">3. Class Balancing & CV <span class="status-badge badge-implemented">Implemented</span></div>
+            <ul class="clean-list">
+              <li>SMOTE oversampling on training fold</li>
+              <li>SMOTETomek hybrid undersampling</li>
+              <li>Stratified 5-Fold Cross Validation</li>
+              <li>Zero data leakage architecture</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">4. Evaluated Classifiers <span class="status-badge badge-implemented">8 Models Active</span></div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+            <span class="flow-node" style="padding: 4px 10px; font-size: 11px;">Gaussian Naive Bayes (Best)</span>
+            <span class="flow-node" style="padding: 4px 10px; font-size: 11px;">Random Forest</span>
+            <span class="flow-node" style="padding: 4px 10px; font-size: 11px;">XGBoost</span>
+            <span class="flow-node" style="padding: 4px 10px; font-size: 11px;">Logistic Regression</span>
+            <span class="flow-node" style="padding: 4px 10px; font-size: 11px;">Decision Tree</span>
+            <span class="flow-node" style="padding: 4px 10px; font-size: 11px;">Support Vector Machine (SVM)</span>
+            <span class="flow-node" style="padding: 4px 10px; font-size: 11px;">KNN</span>
+            <span class="flow-node" style="padding: 4px 10px; font-size: 11px;">MLP Neural Network</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 5 ================= -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="slide-tag">User Interface</div>
+        <h1 class="slide-title">Prototype Workflow & UI Modules</h1>
+        <p class="slide-subtitle">Live web application architecture built with React 19, Tailwind CSS, and FastAPI</p>
+      </div>
+
+      <div class="slide-body">
+        <div class="flow-horizontal" style="margin-bottom: 16px; padding: 10px;">
+          <div class="flow-node">Dashboard</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Prediction Form</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">FastAPI /predict</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight">Result + SHAP</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Research Report</div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 12px;">
+          <div className="card">
+            <div class="card-title" style="color: var(--primary);">Verified Working UI Modules</div>
+            <ul class="clean-list">
+              <li><strong>Dashboard:</strong> Telemetry badges, quick action CTAs, SQLite audit table.</li>
+              <li><strong>CKD Prediction Form:</strong> 24 parameters, 3 sections, High/Low Risk presets.</li>
+              <li><strong>Prediction Result:</strong> Risk Tier badge, model probability % score.</li>
+              <li><strong>Explainable AI Explorer:</strong> SHAP feature waterfall chart & LIME rule table.</li>
+              <li><strong>Research Paper Generator:</strong> 15-Section research paper with PDF export.</li>
+            </ul>
+          </div>
+          <div class="img-card">
+            <img src="images/shap_result.jpg" alt="Prediction Result & SHAP Waterfall UI">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 6 ================= -->
+    <div class="slide" id="slide-6">
+      <div class="slide-header">
+        <div class="slide-tag">Deliverables & Future Roadmap</div>
+        <h1 class="slide-title">Expected Output & Future Work</h1>
+        <p class="slide-subtitle">Summary of completed prototype deliverables vs planned research enhancements</p>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2" style="margin-bottom: 16px;">
+          <div class="card" style="border-left: 4px solid var(--green);">
+            <div class="card-title" style="color: #065F46;">Completed Prototype Deliverables</div>
+            <ul class="clean-list">
+              <li>✓ Real-time CKD / Not CKD prediction endpoint</li>
+              <li>✓ Model probability & risk tier classification</li>
+              <li>✓ 8-Model 5-Fold Stratified Cross-Validation comparison</li>
+              <li>✓ Automatic champion model selection & persistence</li>
+              <li>✓ Dynamic SHAP & LIME Explainable AI attributions</li>
+              <li>✓ SQLite prediction history logging & audit table</li>
+              <li>✓ Auto-generated 15-section academic research report</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-left: 4px solid #F59E0B;">
+            <div class="card-title" style="color: #92400E;">Future Research Roadmap</div>
+            <ul class="clean-list">
+              <li>⏳ Multi-center clinical dataset expansion</li>
+              <li>⏳ External prospective cohort validation</li>
+              <li>⏳ Deep Learning transformer integration for EHR clinical notes</li>
+              <li>⏳ FHIR / HL7 secure healthcare system integration</li>
+              <li>⏳ Clinical prospective trial in outpatient settings</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flow-horizontal" style="margin-bottom: 10px; padding: 10px;">
+          <div class="flow-node">Patient Parameters</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Preprocessing</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Multi-Classifier CV</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight">CKD Risk %</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">SHAP XAI</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">15-Sec Paper</div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-gray); pt-2;">
+          <span style="font-size: 11px; font-weight: 800; color: var(--primary);">CKD Predict — Machine Learning Based CKD Screening Prototype</span>
+          <span style="font-size: 10px; color: var(--text-light);">College Project First Review</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Deck Footer Controls -->
+  <div class="deck-footer">
+    <button class="nav-btn" id="prev-btn" onclick="changeSlide(-1)" disabled>← Previous</button>
+    <div class="slide-counter" id="slide-counter">Slide 1 of 6</div>
+    <button class="nav-btn" id="next-btn" onclick="changeSlide(1)">Next →</button>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 6;
+
+    function changeSlide(direction) {
+      document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+      currentSlide += direction;
+      if (currentSlide < 1) currentSlide = 1;
+      if (currentSlide > totalSlides) currentSlide = totalSlides;
+
+      document.getElementById(`slide-${currentSlide}`).classList.add('active');
+      document.getElementById('slide-counter').innerText = `Slide ${currentSlide} of ${totalSlides}`;
+
+      document.getElementById('prev-btn').disabled = currentSlide === 1;
+      document.getElementById('next-btn').disabled = currentSlide === totalSlides;
+    }
+
+    // Keyboard Arrow Navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        if (currentSlide < totalSlides) changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 1) changeSlide(-1);
+      }
+    });
+  </script>
+</body>
+</html>
