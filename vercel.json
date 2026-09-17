@@ -1,37 +1,72 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/index.py",
-      "use": "@vercel/python"
+      "source": "/health",
+      "destination": "/api/index.py"
     },
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(health|dataset-info|model-info|metrics|blood-pressure|lab-results|wearable-logs|health-summary|predict|explain|predictions|feature-selection)",
-      "dest": "api/index.py"
+      "source": "/dataset-info",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/(eda/.*|models/.*|experiment/.*|report/.*)",
-      "dest": "api/index.py"
+      "source": "/model-info",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "api/index.py"
+      "source": "/metrics",
+      "destination": "/api/index.py"
     },
     {
-      "handle": "filesystem"
+      "source": "/predict",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/explain",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/predictions",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/feature-selection",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/blood-pressure",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/lab-results",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/wearable-logs",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/health-summary",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/eda/:path*",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/models/:path*",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/experiment/:path*",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/report/:path*",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/index.py"
     }
   ]
 }
