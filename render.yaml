@@ -9,3 +9,5 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.12
+      - key: FRONTEND_URL
+        value: https://ckd-qibu.vercel.app
