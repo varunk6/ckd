@@ -4,7 +4,7 @@ import json
 import joblib
 import pandas as pd
 import numpy as np
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -64,6 +64,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Vercel Serverless Path Normalization Middleware
+@app.middleware("http")
+async def vercel_path_normalization_middleware(request: Request, call_next):
+    path = request.scope.get("path", "")
+    if path.startswith("/api/index.py"):
+        request.scope["path"] = path[13:] if len(path) > 13 else "/"
+    elif path.startswith("/api"):
+        request.scope["path"] = path[4:] if len(path) > 4 else "/"
+    response = await call_next(request)
+    return response
+
 # Paths for models and artifacts
 MODEL_DIR = os.path.join(BASE_DIR, "model")
 MODEL_PATH = os.path.join(MODEL_DIR, "best_model.pkl")
@@ -112,6 +123,13 @@ def load_artifacts():
 @app.on_event("startup")
 def startup_event():
     load_artifacts()
+
+# Eagerly load artifacts on import for serverless environments (e.g., Vercel)
+try:
+    load_artifacts()
+except Exception as e:
+    print(f"Eager load_artifacts exception: {e}")
+
 
 @app.get("/")
 def root():
