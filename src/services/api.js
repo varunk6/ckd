@@ -96,6 +96,60 @@ export const api = {
   getResearchReport: async () => {
     const res = await apiClient.get('/report/generate');
     return res.data;
+  },
+
+  // Blood Pressure Module
+  getBloodPressure: async (limit = 100) => {
+    const res = await apiClient.get(`/blood-pressure?limit=${limit}`);
+    return res.data;
+  },
+
+  saveBloodPressure: async (data) => {
+    const res = await apiClient.post('/blood-pressure', data);
+    return res.data;
+  },
+
+  deleteBloodPressure: async (id) => {
+    const res = await apiClient.delete(`/blood-pressure/${id}`);
+    return res.data;
+  },
+
+  // Kidney Health / Lab Results Module
+  getLabResults: async (limit = 100) => {
+    const res = await apiClient.get(`/lab-results?limit=${limit}`);
+    return res.data;
+  },
+
+  saveLabResult: async (data) => {
+    const res = await apiClient.post('/lab-results', data);
+    return res.data;
+  },
+
+  deleteLabResult: async (id) => {
+    const res = await apiClient.delete(`/lab-results/${id}`);
+    return res.data;
+  },
+
+  // Health Monitoring / Wearable Logs Module
+  getWearableLogs: async (limit = 100) => {
+    const res = await apiClient.get(`/wearable-logs?limit=${limit}`);
+    return res.data;
+  },
+
+  saveWearableLog: async (data) => {
+    const res = await apiClient.post('/wearable-logs', data);
+    return res.data;
+  },
+
+  deleteWearableLog: async (id) => {
+    const res = await apiClient.delete(`/wearable-logs/${id}`);
+    return res.data;
+  },
+
+  // Central Health Summary
+  getHealthSummary: async () => {
+    const res = await apiClient.get('/health-summary');
+    return res.data;
   }
 };
 

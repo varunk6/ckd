@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Stethoscope, AlertTriangle, Sparkles, CheckCircle2, RefreshCw } from 'lucide-react';
+import { Stethoscope, AlertTriangle, CheckCircle2, Sparkles } from 'lucide-react';
 import PageHeader from '../components/PageHeader';
 import { usePrediction } from '../context/PredictionContext';
 
@@ -41,7 +41,7 @@ export default function Prediction() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  // High Risk Preset Patient Profile
+  // Preset: High Risk Patient Profile
   const loadHighRiskPreset = () => {
     setFormData({
       age: 62,
@@ -71,7 +71,7 @@ export default function Prediction() {
     });
   };
 
-  // Low Risk Preset Patient Profile
+  // Preset: Low Risk Patient Profile
   const loadLowRiskPreset = () => {
     setFormData({
       age: 32,
@@ -105,358 +105,371 @@ export default function Prediction() {
     e.preventDefault();
     setErrorMsg(null);
     try {
-      await executePrediction({
-        ...formData,
-        age: parseFloat(formData.age),
-        bp: parseFloat(formData.bp),
-        sg: parseFloat(formData.sg),
-        al: parseFloat(formData.al),
-        su: parseFloat(formData.su),
-        bgr: parseFloat(formData.bgr),
-        bu: parseFloat(formData.bu),
-        sc: parseFloat(formData.sc),
-        sod: parseFloat(formData.sod),
-        pot: parseFloat(formData.pot),
-        hemo: parseFloat(formData.hemo),
-        pcv: parseFloat(formData.pcv),
-        wc: parseFloat(formData.wc),
-        rc: parseFloat(formData.rc)
-      });
+      const payload = {
+        age: Number(formData.age),
+        bp: Number(formData.bp),
+        sg: Number(formData.sg),
+        al: Number(formData.al),
+        su: Number(formData.su),
+        rbc: String(formData.rbc),
+        pc: String(formData.pc),
+        pcc: String(formData.pcc),
+        ba: String(formData.ba),
+        bgr: Number(formData.bgr),
+        bu: Number(formData.bu),
+        sc: Number(formData.sc),
+        sod: Number(formData.sod),
+        pot: Number(formData.pot),
+        hemo: Number(formData.hemo),
+        pcv: Number(formData.pcv),
+        wc: Number(formData.wc),
+        rc: Number(formData.rc),
+        htn: String(formData.htn),
+        dm: String(formData.dm),
+        cad: String(formData.cad),
+        appet: String(formData.appet),
+        pe: String(formData.pe),
+        ane: String(formData.ane)
+      };
+
+      await executePrediction(payload);
       navigate('/result');
     } catch (err) {
       console.error("Prediction submission error:", err);
-      setErrorMsg(err.response?.data?.detail || err.message || "Prediction execution failed.");
+      setErrorMsg(err.response?.data?.detail || "Screening service failed to complete. Please ensure backend is running.");
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-4xl mx-auto">
       <PageHeader 
-        title="Patient CKD Risk Screening" 
-        subtitle="Submit patient clinical parameters to evaluate risk stratification against the best trained machine learning model with instant SHAP explanations."
+        title="Check Your Health" 
+        subtitle="Enter your basic health information, blood & kidney test values, and health conditions for AI screening."
       />
 
-      {/* Preset Action Buttons */}
-      <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
-        <span className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-          Load Sample Clinical Profiles:
-        </span>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={loadHighRiskPreset}
-            className="px-3.5 py-2 rounded-xl text-xs font-bold bg-rose-100 text-rose-800 hover:bg-rose-200 transition-all flex items-center gap-1.5"
-          >
-            <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
-            High Risk Sample (Patient A)
-          </button>
+      {/* Preset Action Buttons for Easy Testing */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-gray-200 shadow-xs">
+        <span className="text-xs font-bold text-gray-600">Quick Test Profiles:</span>
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={loadLowRiskPreset}
-            className="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-800 hover:bg-emerald-200 transition-all flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors cursor-pointer"
           >
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-            Low Risk Sample (Patient B)
+            Load Healthy / Low Risk Profile
+          </button>
+          <button
+            type="button"
+            onClick={loadHighRiskPreset}
+            className="px-3 py-1.5 rounded-lg text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors cursor-pointer"
+          >
+            Load High Risk Profile
           </button>
         </div>
       </div>
 
+      {errorMsg && (
+        <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs flex items-start gap-2">
+          <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+          <span>{errorMsg}</span>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Section 1: Demographics & Blood Metrics */}
+        {/* SECTION 1: Basic Information */}
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <h3 className="font-bold text-gray-900 text-base border-b border-gray-100 pb-2">
-            Section 1: Demographics & Blood Metrics
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Age (years)</label>
-              <input 
-                type="number" 
-                min={1} 
-                max={120} 
-                value={formData.age} 
-                onChange={(e) => handleChange('age', e.target.value)} 
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
+          <div className="border-b border-gray-100 pb-3 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-orange-100 text-[#FF6B00] font-bold text-xs flex items-center justify-center">1</span>
+            <h3 className="text-sm font-bold text-gray-900">SECTION 1: Basic Information</h3>
+          </div>
+
+          <div className="w-full md:w-1/2">
+            <label className="block text-xs font-bold text-gray-800 mb-1">
+              Age <span className="text-rose-500">*</span>
+            </label>
+            <div className="relative flex items-center">
+              <input
+                type="number"
+                min="1"
+                max="120"
+                value={formData.age}
+                onChange={(e) => handleChange('age', e.target.value)}
+                placeholder="e.g. 48"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none"
                 required
               />
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Blood Pressure (mmHg)</label>
-              <input 
-                type="number" 
-                min={40} 
-                max={200} 
-                value={formData.bp} 
-                onChange={(e) => handleChange('bp', e.target.value)} 
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Blood Glucose Random (mg/dl)</label>
-              <input 
-                type="number" 
-                min={50} 
-                max={600} 
-                value={formData.bgr} 
-                onChange={(e) => handleChange('bgr', e.target.value)} 
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Blood Urea (mg/dl)</label>
-              <input 
-                type="number" 
-                step="0.1"
-                min={5} 
-                max={400} 
-                value={formData.bu} 
-                onChange={(e) => handleChange('bu', e.target.value)} 
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Serum Creatinine (mg/dl)</label>
-              <input 
-                type="number" 
-                step="0.1"
-                min={0.1} 
-                max={30.0} 
-                value={formData.sc} 
-                onChange={(e) => handleChange('sc', e.target.value)} 
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Hemoglobin (gms)</label>
-              <input 
-                type="number" 
-                step="0.1"
-                min={3.0} 
-                max={20.0} 
-                value={formData.hemo} 
-                onChange={(e) => handleChange('hemo', e.target.value)} 
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Packed Cell Volume (%)</label>
-              <input 
-                type="number" 
-                min={10} 
-                max={60} 
-                value={formData.pcv} 
-                onChange={(e) => handleChange('pcv', e.target.value)} 
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">White Blood Cell Count</label>
-              <input 
-                type="number" 
-                min={1000} 
-                max={30000} 
-                value={formData.wc} 
-                onChange={(e) => handleChange('wc', e.target.value)} 
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Red Blood Cell Count</label>
-              <input 
-                type="number" 
-                step="0.1"
-                min={1.0} 
-                max={10.0} 
-                value={formData.rc} 
-                onChange={(e) => handleChange('rc', e.target.value)} 
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-                required
-              />
+              <span className="absolute right-3 text-xs font-semibold text-gray-400">years</span>
             </div>
           </div>
         </div>
 
-        {/* Section 2: Urine Analysis */}
+        {/* SECTION 2: Blood & Kidney Information */}
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <h3 className="font-bold text-gray-900 text-base border-b border-gray-100 pb-2">
-            Section 2: Urine Analysis & Electrolytes
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div className="border-b border-gray-100 pb-3 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-orange-100 text-[#FF6B00] font-bold text-xs flex items-center justify-center">2</span>
+            <h3 className="text-sm font-bold text-gray-900">SECTION 2: Blood & Kidney Information</h3>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {/* BP */}
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Specific Gravity (sg)</label>
-              <select 
-                value={formData.sg} 
-                onChange={(e) => handleChange('sg', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-              >
-                <option value={1.005}>1.005</option>
-                <option value={1.010}>1.010</option>
-                <option value={1.015}>1.015</option>
-                <option value={1.020}>1.020</option>
-                <option value={1.025}>1.025</option>
-              </select>
+              <label className="block text-xs font-bold text-gray-800 mb-1">
+                Blood Pressure <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  type="number"
+                  min="40"
+                  max="240"
+                  value={formData.bp}
+                  onChange={(e) => handleChange('bp', e.target.value)}
+                  placeholder="e.g. 80"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none pr-14"
+                  required
+                />
+                <span className="absolute right-3 text-xs font-semibold text-gray-400">mmHg</span>
+              </div>
             </div>
+
+            {/* Blood Glucose */}
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Albumin Level (0 - 5)</label>
-              <select 
-                value={formData.al} 
+              <label className="block text-xs font-bold text-gray-800 mb-1">
+                Blood Glucose <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  type="number"
+                  min="50"
+                  max="500"
+                  value={formData.bgr}
+                  onChange={(e) => handleChange('bgr', e.target.value)}
+                  placeholder="e.g. 120"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none pr-14"
+                  required
+                />
+                <span className="absolute right-3 text-xs font-semibold text-gray-400">mg/dL</span>
+              </div>
+            </div>
+
+            {/* Blood Urea */}
+            <div>
+              <label className="block text-xs font-bold text-gray-800 mb-1">
+                Blood Urea <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="1"
+                  max="400"
+                  value={formData.bu}
+                  onChange={(e) => handleChange('bu', e.target.value)}
+                  placeholder="e.g. 36"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none pr-14"
+                  required
+                />
+                <span className="absolute right-3 text-xs font-semibold text-gray-400">mg/dL</span>
+              </div>
+            </div>
+
+            {/* Serum Creatinine */}
+            <div>
+              <label className="block text-xs font-bold text-gray-800 mb-1">
+                Serum Creatinine <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0.1"
+                  max="30"
+                  value={formData.sc}
+                  onChange={(e) => handleChange('sc', e.target.value)}
+                  placeholder="e.g. 1.2"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none pr-14"
+                  required
+                />
+                <span className="absolute right-3 text-xs font-semibold text-gray-400">mg/dL</span>
+              </div>
+            </div>
+
+            {/* Sodium */}
+            <div>
+              <label className="block text-xs font-bold text-gray-800 mb-1">
+                Sodium <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="80"
+                  max="180"
+                  value={formData.sod}
+                  onChange={(e) => handleChange('sod', e.target.value)}
+                  placeholder="e.g. 138"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none pr-14"
+                  required
+                />
+                <span className="absolute right-3 text-xs font-semibold text-gray-400">mEq/L</span>
+              </div>
+            </div>
+
+            {/* Potassium */}
+            <div>
+              <label className="block text-xs font-bold text-gray-800 mb-1">
+                Potassium <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="1"
+                  max="15"
+                  value={formData.pot}
+                  onChange={(e) => handleChange('pot', e.target.value)}
+                  placeholder="e.g. 4.5"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none pr-14"
+                  required
+                />
+                <span className="absolute right-3 text-xs font-semibold text-gray-400">mEq/L</span>
+              </div>
+            </div>
+
+            {/* Hemoglobin */}
+            <div>
+              <label className="block text-xs font-bold text-gray-800 mb-1">
+                Hemoglobin <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="2"
+                  max="25"
+                  value={formData.hemo}
+                  onChange={(e) => handleChange('hemo', e.target.value)}
+                  placeholder="e.g. 15.4"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none pr-14"
+                  required
+                />
+                <span className="absolute right-3 text-xs font-semibold text-gray-400">g/dL</span>
+              </div>
+            </div>
+
+            {/* Albumin */}
+            <div>
+              <label className="block text-xs font-bold text-gray-800 mb-1">
+                Albumin Level <span className="text-rose-500">*</span>
+              </label>
+              <select
+                value={formData.al}
                 onChange={(e) => handleChange('al', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none bg-white"
               >
-                {[0, 1, 2, 3, 4, 5].map(v => <option key={v} value={v}>{v}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Sugar Level (0 - 5)</label>
-              <select 
-                value={formData.su} 
-                onChange={(e) => handleChange('su', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-              >
-                {[0, 1, 2, 3, 4, 5].map(v => <option key={v} value={v}>{v}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Red Blood Cells (rbc)</label>
-              <select 
-                value={formData.rbc} 
-                onChange={(e) => handleChange('rbc', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-              >
-                <option value="normal">normal</option>
-                <option value="abnormal">abnormal</option>
-              </select>
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Pus Cells (pc)</label>
-              <select 
-                value={formData.pc} 
-                onChange={(e) => handleChange('pc', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-              >
-                <option value="normal">normal</option>
-                <option value="abnormal">abnormal</option>
-              </select>
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-700 mb-1">Pus Cell Clumps (pcc)</label>
-              <select 
-                value={formData.pcc} 
-                onChange={(e) => handleChange('pcc', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
-              >
-                <option value="notpresent">notpresent</option>
-                <option value="present">present</option>
+                <option value="0">Grade 0 (Normal)</option>
+                <option value="1">Grade 1 (Trace)</option>
+                <option value="2">Grade 2 (+)</option>
+                <option value="3">Grade 3 (++)</option>
+                <option value="4">Grade 4 (+++)</option>
+                <option value="5">Grade 5 (++++)</option>
               </select>
             </div>
           </div>
         </div>
 
-        {/* Section 3: Symptoms & Medical History */}
+        {/* SECTION 3: Health Conditions */}
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <h3 className="font-bold text-gray-900 text-base border-b border-gray-100 pb-2">
-            Section 3: Medical History & Symptoms
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div className="border-b border-gray-100 pb-3 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-orange-100 text-[#FF6B00] font-bold text-xs flex items-center justify-center">3</span>
+            <h3 className="text-sm font-bold text-gray-900">SECTION 3: Health Conditions</h3>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Hypertension (htn)</label>
-              <select 
-                value={formData.htn} 
+              <label className="block text-xs font-bold text-gray-800 mb-1">Hypertension</label>
+              <select
+                value={formData.htn}
                 onChange={(e) => handleChange('htn', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none bg-white font-semibold"
               >
-                <option value="no">no</option>
-                <option value="yes">yes</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
               </select>
             </div>
+
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Diabetes Mellitus (dm)</label>
-              <select 
-                value={formData.dm} 
+              <label className="block text-xs font-bold text-gray-800 mb-1">Diabetes Mellitus</label>
+              <select
+                value={formData.dm}
                 onChange={(e) => handleChange('dm', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none bg-white font-semibold"
               >
-                <option value="no">no</option>
-                <option value="yes">yes</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
               </select>
             </div>
+
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Coronary Artery Disease (cad)</label>
-              <select 
-                value={formData.cad} 
+              <label className="block text-xs font-bold text-gray-800 mb-1">Heart Disease (CAD)</label>
+              <select
+                value={formData.cad}
                 onChange={(e) => handleChange('cad', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none bg-white font-semibold"
               >
-                <option value="no">no</option>
-                <option value="yes">yes</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
               </select>
             </div>
+
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Appetite (appet)</label>
-              <select 
-                value={formData.appet} 
+              <label className="block text-xs font-bold text-gray-800 mb-1">Appetite</label>
+              <select
+                value={formData.appet}
                 onChange={(e) => handleChange('appet', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none bg-white font-semibold"
               >
-                <option value="good">good</option>
-                <option value="poor">poor</option>
+                <option value="good">Good</option>
+                <option value="poor">Poor</option>
               </select>
             </div>
+
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Pedal Edema (pe)</label>
-              <select 
-                value={formData.pe} 
+              <label className="block text-xs font-bold text-gray-800 mb-1">Pedal Edema (Swelling)</label>
+              <select
+                value={formData.pe}
                 onChange={(e) => handleChange('pe', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none bg-white font-semibold"
               >
-                <option value="no">no</option>
-                <option value="yes">yes</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
               </select>
             </div>
+
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Anemia (ane)</label>
-              <select 
-                value={formData.ane} 
+              <label className="block text-xs font-bold text-gray-800 mb-1">Anemia</label>
+              <select
+                value={formData.ane}
                 onChange={(e) => handleChange('ane', e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-medium"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF6B00] outline-none bg-white font-semibold"
               >
-                <option value="no">no</option>
-                <option value="yes">yes</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
               </select>
             </div>
           </div>
         </div>
 
-        {errorMsg && (
-          <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs font-medium">
-            {errorMsg}
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-gradient-to-r from-[#FF6B00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-orange-500/25 flex items-center justify-center gap-2 text-base transition-all disabled:opacity-50"
-        >
-          {loading ? (
-            <>
-              <RefreshCw className="w-5 h-5 animate-spin" />
-              Running Inference Pipeline & SHAP Explainer...
-            </>
-          ) : (
-            <>
-              <Sparkles className="w-5 h-5" />
-              Predict CKD Risk & Generate SHAP Explanation
-            </>
-          )}
-        </button>
+        {/* Form Action Submit Button */}
+        <div className="pt-2 flex justify-end">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full sm:w-auto px-8 py-3.5 bg-[#FF6B00] hover:bg-[#E05A00] text-white text-sm font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-orange-500/30"
+          >
+            <Stethoscope className="w-5 h-5" />
+            <span>{loading ? 'Processing Screening...' : 'Predict CKD Risk'}</span>
+          </button>
+        </div>
       </form>
     </div>
   );

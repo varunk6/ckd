@@ -20,12 +20,28 @@ from schemas.prediction import (
     ExperimentRequestSchema, 
     ExplainRequestSchema
 )
+from schemas.health import (
+    BloodPressureInputSchema,
+    LabResultInputSchema,
+    WearableLogInputSchema
+)
 from database.db import (
     init_db, 
     save_prediction, 
     get_predictions, 
     delete_prediction, 
-    get_statistics
+    clear_all_predictions,
+    get_statistics,
+    save_bp_reading,
+    get_bp_readings,
+    delete_bp_reading,
+    save_lab_result,
+    get_lab_results,
+    delete_lab_result,
+    save_wearable_log,
+    get_wearable_logs,
+    delete_wearable_log,
+    get_health_summary
 )
 from ml.dataset import load_and_clean_dataset, NUMERIC_COLS, CATEGORICAL_COLS
 from ml.preprocessing import get_transformed_feature_names
@@ -363,6 +379,95 @@ def get_report():
         "generated_on": model_metadata.get("timestamp"),
         "best_model": model_metadata.get("best_model_name")
     }
+
+# Blood Pressure Endpoints
+@app.get("/blood-pressure")
+def list_blood_pressure(limit: int = 100):
+    return get_bp_readings(limit=limit)
+
+@app.post("/blood-pressure")
+def add_blood_pressure(payload: BloodPressureInputSchema):
+    record_id = save_bp_reading(
+        systolic=payload.systolic,
+        diastolic=payload.diastolic,
+        pulse=payload.pulse,
+        date=payload.date,
+        time=payload.time
+    )
+    return {"id": record_id, "message": "Blood pressure reading saved successfully."}
+
+@app.delete("/blood-pressure/{bp_id}")
+def remove_blood_pressure(bp_id: int):
+    success = delete_bp_reading(bp_id)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"BP record ID {bp_id} not found.")
+    return {"message": f"BP record {bp_id} deleted successfully."}
+
+# Lab Results Endpoints
+@app.get("/lab-results")
+def list_lab_results(limit: int = 100):
+    return get_lab_results(limit=limit)
+
+@app.post("/lab-results")
+def add_lab_result(payload: LabResultInputSchema):
+    record_id = save_lab_result(
+        test_date=payload.test_date,
+        sc=payload.sc,
+        bu=payload.bu,
+        egfr=payload.egfr,
+        hemo=payload.hemo,
+        sod=payload.sod,
+        pot=payload.pot,
+        bgr=payload.bgr,
+        al=payload.al,
+        protein=payload.protein,
+        rbc=payload.rbc,
+        wbc=payload.wbc
+    )
+    return {"id": record_id, "message": "Lab result saved successfully."}
+
+@app.delete("/lab-results/{lab_id}")
+def remove_lab_result(lab_id: int):
+    success = delete_lab_result(lab_id)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Lab result ID {lab_id} not found.")
+    return {"message": f"Lab result {lab_id} deleted successfully."}
+
+# Wearable Logs Endpoints
+@app.get("/wearable-logs")
+def list_wearable_logs(limit: int = 100):
+    return get_wearable_logs(limit=limit)
+
+@app.post("/wearable-logs")
+def add_wearable_log(payload: WearableLogInputSchema):
+    record_id = save_wearable_log(
+        log_date=payload.log_date,
+        steps=payload.steps,
+        active_minutes=payload.active_minutes,
+        calories=payload.calories,
+        sedentary_alerts=payload.sedentary_alerts,
+        heart_rate=payload.heart_rate,
+        min_hr=payload.min_hr,
+        max_hr=payload.max_hr,
+        hrv=payload.hrv,
+        sleep_duration=payload.sleep_duration,
+        awake_duration=payload.awake_duration,
+        sleep_score=payload.sleep_score,
+        stress_level=payload.stress_level
+    )
+    return {"id": record_id, "message": "Wearable log saved successfully."}
+
+@app.delete("/wearable-logs/{log_id}")
+def remove_wearable_log(log_id: int):
+    success = delete_wearable_log(log_id)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Wearable log ID {log_id} not found.")
+    return {"message": f"Wearable log {log_id} deleted successfully."}
+
+# Health Summary Endpoint
+@app.get("/health-summary")
+def health_summary():
+    return get_health_summary()
 
 if __name__ == "__main__":
     import uvicorn

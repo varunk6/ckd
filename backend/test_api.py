@@ -91,6 +91,44 @@ def test_report_generate_endpoint():
     assert "report_markdown" in data
     assert len(data["report_markdown"]) > 100
 
+def test_health_modules_endpoints():
+    # Test Blood Pressure
+    bp_resp = client.post("/blood-pressure", json={"systolic": 120, "diastolic": 80, "pulse": 72, "date": "2026-09-17", "time": "09:00"})
+    assert bp_resp.status_code == 200
+    bp_id = bp_resp.json()["id"]
+    
+    get_bp = client.get("/blood-pressure")
+    assert get_bp.status_code == 200
+    assert len(get_bp.json()) >= 1
+
+    # Test Lab Results
+    lab_resp = client.post("/lab-results", json={"test_date": "2026-09-17", "sc": 1.2, "bu": 40, "egfr": 75.0, "hemo": 13.5})
+    assert lab_resp.status_code == 200
+    lab_id = lab_resp.json()["id"]
+
+    get_lab = client.get("/lab-results")
+    assert get_lab.status_code == 200
+    assert len(get_lab.json()) >= 1
+
+    # Test Wearable Logs
+    wear_resp = client.post("/wearable-logs", json={"log_date": "2026-09-17", "steps": 8500, "heart_rate": 68, "sleep_duration": 7.5})
+    assert wear_resp.status_code == 200
+    wear_id = wear_resp.json()["id"]
+
+    get_wear = client.get("/wearable-logs")
+    assert get_wear.status_code == 200
+    assert len(get_wear.json()) >= 1
+
+    # Test Health Summary
+    sum_resp = client.get("/health-summary")
+    assert sum_resp.status_code == 200
+    assert "latest_bp" in sum_resp.json()
+
+    # Clean up created test items
+    client.delete(f"/blood-pressure/{bp_id}")
+    client.delete(f"/lab-results/{lab_id}")
+    client.delete(f"/wearable-logs/{wear_id}")
+
 if __name__ == "__main__":
     setup_module(None)
     test_health_endpoint()
@@ -100,4 +138,6 @@ if __name__ == "__main__":
     test_models_comparison_endpoint()
     test_predict_and_explain_endpoint()
     test_report_generate_endpoint()
-    print("ALL BACKEND RESEARCH API TESTS PASSED SUCCESSFULLY!")
+    test_health_modules_endpoints()
+    print("ALL BACKEND RESEARCH & HEALTH API TESTS PASSED SUCCESSFULLY!")
+

@@ -24,11 +24,11 @@ export const Header = () => {
         <div className="flex items-center gap-2 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#FAFAFA] border border-[#E4E4E7]">
           <span
             className={`w-2 h-2 rounded-full ${
-              apiOnline ? 'bg-[#1A7F37]' : 'bg-[#D97706]'
+              apiOnline ? 'bg-emerald-500' : 'bg-rose-500'
             }`}
           />
-          <span className={apiOnline ? 'text-[#1A7F37]' : 'text-[#D97706]'}>
-            {apiOnline ? 'Backend Online' : 'Backend Disconnected'}
+          <span className={apiOnline ? 'text-emerald-700' : 'text-rose-600'}>
+            {apiOnline ? 'Backend Connected' : 'Backend Disconnected'}
           </span>
         </div>
 

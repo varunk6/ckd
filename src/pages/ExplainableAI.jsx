@@ -1,176 +1,130 @@
-import React, { useState } from 'react';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  ResponsiveContainer, 
-  CartesianGrid, 
-  Cell 
-} from 'recharts';
-import { BrainCircuit, Info, Sparkles, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { BrainCircuit, ArrowUpRight, ArrowDownRight, Info, FlaskConical, ArrowLeft } from 'lucide-react';
 import PageHeader from '../components/PageHeader';
 import { usePrediction } from '../context/PredictionContext';
 
 export default function ExplainableAI() {
-  const { lastPrediction, modelInfo } = usePrediction();
-  const [activeTab, setActiveTab] = useState('shap');
+  const { lastPrediction } = usePrediction();
+  const navigate = useNavigate();
 
-  // Fallback demo SHAP local attributions if no active prediction exists yet
-  const shapList = lastPrediction?.shap_explanation?.local_explanations || [
-    { feature: 'sc (Serum Creatinine)', shap_value: 0.42, effect: 'Increases CKD risk' },
-    { feature: 'hemo (Hemoglobin)', shap_value: -0.38, effect: 'Decreases CKD risk' },
-    { feature: 'sg (Specific Gravity)', shap_value: -0.25, effect: 'Decreases CKD risk' },
-    { feature: 'al (Albumin)', shap_value: 0.22, effect: 'Increases CKD risk' },
-    { feature: 'bu (Blood Urea)', shap_value: 0.18, effect: 'Increases CKD risk' },
-    { feature: 'pcv (Packed Cell Volume)', shap_value: -0.15, effect: 'Decreases CKD risk' },
-    { feature: 'htn (Hypertension)', shap_value: 0.12, effect: 'Increases CKD risk' },
-    { feature: 'dm (Diabetes)', shap_value: 0.10, effect: 'Increases CKD risk' }
+  // Dynamic SHAP values from prediction response or default sample list
+  const rawShapList = lastPrediction?.shap_explanation?.local_explanations || [
+    { feature: 'Serum Creatinine (sc)', shap_value: 0.42 },
+    { feature: 'Hemoglobin (hemo)', shap_value: -0.38 },
+    { feature: 'Blood Urea (bu)', shap_value: 0.28 },
+    { feature: 'Specific Gravity (sg)', shap_value: -0.25 },
+    { feature: 'Albumin (al)', shap_value: 0.22 },
+    { feature: 'Blood Glucose (bgr)', shap_value: 0.18 },
+    { feature: 'Hypertension (htn)', shap_value: 0.14 },
+    { feature: 'Packed Cell Volume (pcv)', shap_value: -0.12 }
   ];
 
-  const limeList = lastPrediction?.lime_explanation?.local_explanations || [
-    { rule: 'sc > 1.20', weight: 0.35, effect: 'Increases CKD risk' },
-    { rule: 'hemo <= 12.5', weight: 0.28, effect: 'Increases CKD risk' },
-    { rule: 'sg <= 1.015', weight: 0.20, effect: 'Increases CKD risk' },
-    { rule: 'al > 1.00', weight: 0.18, effect: 'Increases CKD risk' },
-    { rule: 'htn = yes', weight: 0.14, effect: 'Increases CKD risk' }
-  ];
+  // Separate factors into Increasing risk vs Decreasing risk
+  const increasingFactors = rawShapList.filter(item => item.shap_value > 0);
+  const decreasingFactors = rawShapList.filter(item => item.shap_value < 0);
 
   return (
-    <div className="space-y-6">
-      <PageHeader 
-        title="Explainable AI (XAI) Explorer" 
-        subtitle="Unpacking black-box ML predictions with SHAP (SHapley Additive exPlanations) and LIME (Local Interpretable Model-agnostic Explanations)."
-      />
-
-      {/* Explainer Selector Tabs */}
-      <div className="flex gap-3 border-b border-gray-200 pb-2">
+    <div className="space-y-6 max-w-4xl mx-auto">
+      <div className="flex items-center justify-between">
+        <PageHeader 
+          title="Why did the AI make this prediction?" 
+          subtitle="Simple breakdown of health factors that influenced your AI screening outcome."
+        />
         <button
-          onClick={() => setActiveTab('shap')}
-          className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all ${
-            activeTab === 'shap'
-              ? 'bg-[#FF6B00] text-white shadow-md shadow-orange-500/20'
-              : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-          }`}
+          onClick={() => navigate('/research')}
+          className="px-3.5 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 text-xs font-bold shadow-xs cursor-pointer flex items-center gap-1.5 shrink-0"
         >
-          <Sparkles className="w-4 h-4" />
-          SHAP Waterfall & Feature Attribution
-        </button>
-        <button
-          onClick={() => setActiveTab('lime')}
-          className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all ${
-            activeTab === 'lime'
-              ? 'bg-[#FF6B00] text-white shadow-md shadow-orange-500/20'
-              : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-          }`}
-        >
-          <BrainCircuit className="w-4 h-4" />
-          LIME Rule Weight Explanations
+          <FlaskConical className="w-4 h-4 text-[#FF6B00]" />
+          <span>Advanced Research View</span>
         </button>
       </div>
 
-      {activeTab === 'shap' ? (
-        <div className="space-y-6">
-          {/* SHAP Local Waterfall Chart */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-bold text-gray-900 text-base">SHAP Local Feature Attribution</h3>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  Positive values (orange) push prediction toward higher CKD risk. Negative values (emerald) push toward normal.
-                </p>
-              </div>
-              <span className="text-xs bg-orange-100 text-[#FF6B00] px-2.5 py-1 rounded-full font-bold">
-                {lastPrediction ? `Prediction #${lastPrediction.id}` : 'Sample Patient Profile'}
-              </span>
-            </div>
-
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  layout="vertical"
-                  data={shapList}
-                  margin={{ top: 10, right: 30, left: 100, bottom: 10 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#F3F4F6" />
-                  <XAxis type="number" tick={{ fontSize: 10 }} />
-                  <YAxis dataKey="feature" type="category" tick={{ fontSize: 10 }} width={120} />
-                  <Tooltip formatter={(value) => value.toFixed(4)} />
-                  <Bar dataKey="shap_value" name="SHAP Attribution Value" radius={[0, 4, 4, 0]}>
-                    {shapList.map((entry, index) => (
-                      <Cell 
-                        key={`cell-${index}`} 
-                        fill={entry.shap_value > 0 ? '#FF6B00' : '#10B981'} 
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+      {/* Main Explanation Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {/* Factors that Increased Risk (↑) */}
+        <div className="bg-white p-6 rounded-3xl border border-rose-200 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 border-b border-rose-100 pb-3">
+            <span className="p-2 bg-rose-100 text-rose-600 rounded-xl">
+              <ArrowUpRight className="w-5 h-5" />
+            </span>
+            <div>
+              <h3 className="text-sm font-extrabold text-rose-950">Factors That Increased Risk</h3>
+              <p className="text-[11px] text-rose-600">Pushed model toward higher likelihood</p>
             </div>
           </div>
 
-          {/* Dynamic SHAP Explanation Table */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-            <h3 className="font-bold text-gray-900 text-base">Dynamic SHAP Feature Influence Table</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="bg-gray-50 text-gray-700 font-semibold border-b border-gray-200">
-                    <th className="p-3">Clinical Attribute</th>
-                    <th className="p-3">SHAP Value</th>
-                    <th className="p-3">Model Direction / Impact</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {shapList.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-gray-50">
-                      <td className="p-3 font-bold text-gray-900">{item.feature}</td>
-                      <td className="p-3 font-mono font-bold text-gray-800">{item.shap_value.toFixed(4)}</td>
-                      <td className="p-3">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                          item.shap_value > 0 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'
-                        }`}>
-                          {item.effect || (item.shap_value > 0 ? 'Increases CKD risk' : 'Decreases CKD risk')}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {increasingFactors.length === 0 ? (
+            <p className="text-xs text-gray-400 py-4">No risk-increasing factors identified.</p>
+          ) : (
+            <div className="space-y-3">
+              {increasingFactors.map((item, idx) => (
+                <div key={idx} className="p-3 bg-rose-50/60 rounded-xl flex items-center justify-between text-xs">
+                  <span className="font-bold text-gray-900">{item.feature}</span>
+                  <span className="font-bold text-rose-700 inline-flex items-center gap-1">
+                    <ArrowUpRight className="w-3.5 h-3.5" /> Increased contribution
+                  </span>
+                </div>
+              ))}
             </div>
-          </div>
+          )}
         </div>
-      ) : (
-        /* LIME Explanation View */
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <h3 className="font-bold text-gray-900 text-base">LIME Local Feature Rule Attribution</h3>
+
+        {/* Factors that Decreased Risk (↓) */}
+        <div className="bg-white p-6 rounded-3xl border border-emerald-200 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 border-b border-emerald-100 pb-3">
+            <span className="p-2 bg-emerald-100 text-emerald-600 rounded-xl">
+              <ArrowDownRight className="w-5 h-5" />
+            </span>
+            <div>
+              <h3 className="text-sm font-extrabold text-emerald-950">Factors That Decreased Risk</h3>
+              <p className="text-[11px] text-emerald-600">Pushed model toward lower likelihood</p>
+            </div>
+          </div>
+
+          {decreasingFactors.length === 0 ? (
+            <p className="text-xs text-gray-400 py-4">No risk-decreasing factors identified.</p>
+          ) : (
+            <div className="space-y-3">
+              {decreasingFactors.map((item, idx) => (
+                <div key={idx} className="p-3 bg-emerald-50/60 rounded-xl flex items-center justify-between text-xs">
+                  <span className="font-bold text-gray-900">{item.feature}</span>
+                  <span className="font-bold text-emerald-700 inline-flex items-center gap-1">
+                    <ArrowDownRight className="w-3.5 h-3.5" /> Decreased contribution
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+      </div>
+
+      {/* Advanced Research Notice */}
+      <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <h4 className="text-xs font-bold text-gray-900">Looking for Technical SHAP & LIME Mathematics?</h4>
           <p className="text-xs text-gray-500">
-            LIME constructs a linear surrogate model in the local neighborhood of the patient instance.
+            View feature weight matrices, LIME decision boundary rules, confusion matrices, and ROC curves in the Research Hub.
           </p>
-
-          <div className="divide-y divide-gray-100">
-            {limeList.map((rule, idx) => (
-              <div key={idx} className="py-3 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-full bg-orange-100 text-[#FF6B00] font-bold flex items-center justify-center text-[10px]">
-                    #{idx + 1}
-                  </span>
-                  <span className="font-mono text-gray-800 font-bold">{rule.rule}</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="font-mono text-gray-600 font-semibold">Weight: {rule.weight}</span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                    rule.weight > 0 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'
-                  }`}>
-                    {rule.effect}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
-      )}
+
+        <Link
+          to="/research"
+          className="px-4 py-2.5 rounded-xl bg-[#FF6B00] text-white font-bold text-xs shadow-md shadow-orange-500/20 shrink-0"
+        >
+          Go to Research Hub &rarr;
+        </Link>
+      </div>
+
+      {/* Medical Disclaimer */}
+      <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-xs flex items-start gap-3">
+        <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+        <div>
+          <span className="font-bold">Medical Disclaimer:</span> This website is intended for educational and research screening purposes only. It is not a medical diagnosis or treatment tool. Consult a qualified healthcare professional for medical advice.
+        </div>
+      </div>
     </div>
   );
 }

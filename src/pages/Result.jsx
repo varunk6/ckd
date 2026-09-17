@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   AlertTriangle, 
   CheckCircle2, 
@@ -8,52 +8,53 @@ import {
   RefreshCw, 
   Sparkles, 
   ArrowLeft,
-  Info
+  Info,
+  History
 } from 'lucide-react';
 import PageHeader from '../components/PageHeader';
 import { usePrediction } from '../context/PredictionContext';
 
 export default function Result() {
   const { lastPrediction } = usePrediction();
+  const navigate = useNavigate();
 
   if (!lastPrediction) {
     return (
       <div className="p-12 text-center space-y-4 bg-white rounded-2xl border border-gray-200 shadow-sm max-w-lg mx-auto">
         <Info className="w-10 h-10 text-gray-400 mx-auto" />
-        <h3 className="text-lg font-bold text-gray-800">No Active Prediction Record</h3>
+        <h3 className="text-lg font-bold text-gray-800">No Active Screening Result</h3>
         <p className="text-xs text-gray-500">
-          Please submit a patient clinical profile on the Prediction page to view risk scores and SHAP explanations.
+          Please submit your health information on the Check Health form to view your screening result.
         </p>
         <Link 
-          to="/predict" 
-          className="inline-flex items-center gap-2 bg-[#FF6B00] text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow-md shadow-orange-500/20"
+          to="/check-health" 
+          className="inline-flex items-center gap-2 bg-[#FF6B00] text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-md shadow-orange-500/20"
         >
-          Go to Prediction Form
+          Check Your Health Now
         </Link>
       </div>
     );
   }
 
   const isCkd = lastPrediction.prediction === 'ckd';
-  const probPct = lastPrediction.probability_percentage || (lastPrediction.probability * 100).toFixed(1);
-  const shapExplanations = lastPrediction.shap_explanation?.local_explanations || [];
+  const probPct = lastPrediction.probability_percentage || (lastPrediction.probability * 100).toFixed(0);
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto">
       {/* Top Header */}
       <div className="flex items-center justify-between">
-        <Link to="/predict" className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-gray-900">
-          <ArrowLeft className="w-4 h-4" /> Back to Form
+        <Link to="/check-health" className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-gray-900">
+          <ArrowLeft className="w-4 h-4" /> Back to Check Health
         </Link>
         <button 
           onClick={() => window.print()} 
-          className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm"
+          className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm cursor-pointer"
         >
-          <Printer className="w-4 h-4" /> Print / Export PDF
+          <Printer className="w-4 h-4" /> Print Report
         </button>
       </div>
 
-      {/* Primary Risk Result Card */}
+      {/* Main Result Card */}
       <div className={`p-8 rounded-3xl border shadow-lg space-y-6 ${
         isCkd 
           ? 'bg-gradient-to-br from-rose-50 to-orange-50 border-rose-200 text-rose-950' 
@@ -72,108 +73,61 @@ export default function Result() {
                 </span>
               )}
               <div>
-                <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
-                  isCkd ? 'bg-rose-200 text-rose-800' : 'bg-emerald-200 text-emerald-800'
-                }`}>
-                  Risk Tier: {lastPrediction.risk_level} Risk
-                </span>
-                <h2 className="text-2xl font-black mt-1">
-                  {lastPrediction.prediction_label}
+                <span className="text-xs font-extrabold uppercase tracking-wider text-gray-500">Your Screening Result</span>
+                <h2 className="text-2xl font-black mt-0.5">
+                  {isCkd ? 'The model predicts a higher likelihood of CKD.' : 'The model predicts a lower likelihood of CKD.'}
                 </h2>
               </div>
             </div>
             <p className="text-xs leading-relaxed opacity-90 max-w-xl">
-              {lastPrediction.message}
+              Based on the submitted health parameters, the machine learning model calculated your risk profile.
             </p>
           </div>
 
-          {/* Model Probability Badge */}
-          <div className="bg-white/80 backdrop-blur rounded-2xl p-6 border border-white text-center min-w-[220px] shadow-sm space-y-2">
-            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Model Likelihood</div>
+          {/* Model-Estimated Likelihood Box */}
+          <div className="bg-white/90 backdrop-blur rounded-2xl p-6 border border-white text-center min-w-[220px] shadow-sm space-y-2">
+            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Model-Estimated Likelihood</div>
             <div className={`text-4xl font-black ${isCkd ? 'text-rose-600' : 'text-emerald-600'}`}>
               {probPct}%
             </div>
-            {/* Visual Probability Bar Indicator */}
             <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden mt-2">
               <div 
                 className={`h-full transition-all duration-500 ${isCkd ? 'bg-rose-500' : 'bg-emerald-500'}`}
                 style={{ width: `${Math.min(Math.max(parseFloat(probPct), 5), 100)}%` }}
               />
             </div>
-            <div className="text-[10px] text-gray-500 font-semibold pt-1 border-t border-gray-100">
-              Model: <strong className="text-gray-700">{lastPrediction.model_name || 'Naive Bayes / Best Model'}</strong>
-            </div>
-            <div className="text-[10px] text-gray-400">
-              {lastPrediction.created_at || new Date().toLocaleString()}
+            <div className="text-[11px] text-gray-600 font-semibold pt-1 border-t border-gray-100">
+              Model Used: <strong className="text-gray-900">{lastPrediction.model_name || 'XGBoost / Best Model'}</strong>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Dynamic SHAP Explanation Section: "Why did the model make this prediction?" */}
-      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="font-bold text-gray-900 text-base flex items-center gap-2">
-            <BrainCircuit className="w-5 h-5 text-[#FF6B00]" />
-            Why did the model make this prediction? (SHAP Attributions)
-          </h3>
-          <Link to="/explain" className="text-xs font-semibold text-[#FF6B00] hover:underline">
-            Explore Full XAI Engine &rarr;
-          </Link>
-        </div>
+      {/* Action Buttons */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+        <button
+          onClick={() => navigate('/explain')}
+          className="px-6 py-3.5 rounded-xl bg-[#FF6B00] hover:bg-[#E05A00] text-white font-bold text-xs shadow-lg shadow-orange-500/20 transition-all cursor-pointer flex items-center gap-2"
+        >
+          <BrainCircuit className="w-4 h-4" />
+          <span>Understand This Result</span>
+        </button>
 
-        <p className="text-xs text-gray-500">
-          The top factors influencing this specific patient's prediction, calculated dynamically via SHAP values:
-        </p>
-
-        {shapExplanations.length === 0 ? (
-          <div className="p-4 text-xs text-gray-400 bg-gray-50 rounded-xl">
-            No SHAP attribution array returned. Check model explainability module logs.
-          </div>
-        ) : (
-          <div className="divide-y divide-gray-100">
-            {shapExplanations.slice(0, 6).map((item, idx) => (
-              <div key={idx} className="py-3 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-3">
-                  <span className="font-bold text-gray-900 min-w-[120px]">{item.feature}</span>
-                  <span className="text-gray-500 font-mono text-[11px]">SHAP: {item.shap_value}</span>
-                </div>
-                <div>
-                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                    item.shap_value > 0 ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'
-                  }`}>
-                    {item.effect || (item.shap_value > 0 ? 'Increases CKD risk' : 'Decreases CKD risk')}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        <button
+          onClick={() => navigate('/history')}
+          className="px-6 py-3.5 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold text-xs shadow-xs transition-all cursor-pointer flex items-center gap-2"
+        >
+          <History className="w-4 h-4" />
+          <span>View Health History</span>
+        </button>
       </div>
 
-      {/* Prominent Medical Disclaimer */}
+      {/* Medical Disclaimer */}
       <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-xs flex items-start gap-3">
         <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
         <div>
-          <span className="font-bold">Medical Disclaimer:</span> {lastPrediction.disclaimer}
+          <span className="font-bold">Medical Disclaimer:</span> This website is intended for educational and research screening purposes only. It is not a medical diagnosis or treatment tool. Consult a qualified healthcare professional for medical advice.
         </div>
-      </div>
-
-      {/* Bottom Action CTAs */}
-      <div className="flex justify-between items-center pt-2">
-        <Link 
-          to="/predict" 
-          className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2.5 rounded-xl font-bold text-xs"
-        >
-          <RefreshCw className="w-4 h-4" /> New Prediction
-        </Link>
-
-        <Link 
-          to="/explain" 
-          className="inline-flex items-center gap-2 bg-[#FF6B00] text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-lg shadow-orange-500/20"
-        >
-          <Sparkles className="w-4 h-4" /> Deep Dive into XAI Waterfall
-        </Link>
       </div>
     </div>
   );

@@ -1,135 +1,88 @@
-import React, { useState } from 'react';
-import { History as HistoryIcon, Trash2, Search, AlertCircle, RefreshCw, FileText } from 'lucide-react';
+import React from 'react';
+import { History as HistoryIcon, Trash2, Calendar, Stethoscope, AlertTriangle } from 'lucide-react';
 import PageHeader from '../components/PageHeader';
 import { usePrediction } from '../context/PredictionContext';
 
 export default function History() {
-  const { history, deleteHistoryRecord, clearAllHistory, refreshData } = usePrediction();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [deletingId, setDeletingId] = useState(null);
-
-  const filteredHistory = history.filter(item => {
-    const term = searchTerm.toLowerCase();
-    return (
-      item.id.toString().includes(term) ||
-      (item.prediction || '').toLowerCase().includes(term) ||
-      (item.risk_level || '').toLowerCase().includes(term) ||
-      (item.age || '').toString().includes(term)
-    );
-  });
-
-  const handleDelete = async (id) => {
-    setDeletingId(id);
-    await deleteHistoryRecord(id);
-    setDeletingId(null);
-  };
-
-  const handleClearAll = async () => {
-    if (window.confirm("Are you sure you want to permanently clear all prediction history records?")) {
-      await clearAllHistory();
-    }
-  };
+  const { history, deleteHistoryRecord, clearAllHistory } = usePrediction();
 
   return (
-    <div className="space-y-6">
-      <PageHeader 
-        title="Prediction History & Audit Log" 
-        subtitle="Persistent database records of patient risk evaluations logged in SQLite."
-      />
+    <div className="space-y-6 max-w-5xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <PageHeader 
+          title="Prediction History" 
+          subtitle="Review previous AI screening results saved securely in your local database history."
+        />
 
-      {/* Search & Action Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="relative flex-1">
-          <Search className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
-          <input
-            type="text"
-            placeholder="Search by Record ID, Risk Tier, Age..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-orange-500 outline-none"
-          />
-        </div>
-        <div className="flex items-center gap-2">
+        {history.length > 0 && (
           <button
-            onClick={refreshData}
-            className="px-3.5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-xl text-xs font-bold flex items-center gap-2"
+            onClick={clearAllHistory}
+            className="px-3.5 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs font-bold rounded-xl transition-colors cursor-pointer self-start sm:self-auto shrink-0"
           >
-            <RefreshCw className="w-3.5 h-3.5" /> Refresh Log
+            Clear History
           </button>
-          {history.length > 0 && (
-            <button
-              onClick={handleClearAll}
-              className="px-3.5 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 rounded-xl text-xs font-bold flex items-center gap-2"
-            >
-              <Trash2 className="w-3.5 h-3.5 text-rose-600" /> Clear History
-            </button>
-          )}
-        </div>
+        )}
       </div>
 
-      {/* Audit Data Table */}
-      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="font-bold text-gray-900 text-base flex items-center gap-2">
-            <HistoryIcon className="w-5 h-5 text-[#FF6B00]" />
-            Recorded Audit Entries ({filteredHistory.length})
-          </h3>
-        </div>
-
-        {filteredHistory.length === 0 ? (
-          <div className="p-12 text-center text-gray-400 text-xs bg-gray-50 rounded-xl">
-            No matching prediction records found.
+      {history.length > 0 ? (
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 className="text-xs font-bold text-gray-700 uppercase tracking-wider">Screening Records Log</h3>
+            <span className="text-xs font-semibold text-gray-500">{history.length} Total Saved Screenings</span>
           </div>
-        ) : (
+
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="bg-gray-50 text-gray-700 font-semibold border-b border-gray-200">
-                  <th className="p-3">ID</th>
-                  <th className="p-3">Timestamp</th>
-                  <th className="p-3">Age / BP</th>
-                  <th className="p-3">Prediction</th>
-                  <th className="p-3">Probability</th>
-                  <th className="p-3">Risk Tier</th>
-                  <th className="p-3 text-right">Actions</th>
+            <table className="w-full text-left text-xs text-gray-600">
+              <thead className="bg-gray-50 text-gray-700 font-bold uppercase tracking-wider text-[10px]">
+                <tr>
+                  <th className="px-4 py-3">Date</th>
+                  <th className="px-4 py-3">Result</th>
+                  <th className="px-4 py-3">Probability</th>
+                  <th className="px-4 py-3">Model</th>
+                  <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {filteredHistory.map((row) => (
-                  <tr key={row.id} className="hover:bg-gray-50/80 transition-colors">
-                    <td className="p-3 font-bold text-gray-900">#{row.id}</td>
-                    <td className="p-3 text-gray-500">{row.created_at || 'Recent'}</td>
-                    <td className="p-3 text-gray-800 font-medium">
-                      {row.age ? `${row.age} yrs` : 'N/A'} | {row.bp ? `${row.bp} mmHg` : 'N/A'}
-                    </td>
-                    <td className="p-3">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                        row.prediction === 'ckd' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'
-                      }`}>
-                        {row.prediction === 'ckd' ? 'CKD Detected' : 'Normal'}
-                      </span>
-                    </td>
-                    <td className="p-3 font-bold text-[#FF6B00]">
-                      {row.probability ? `${(row.probability * 100).toFixed(1)}%` : 'N/A'}
-                    </td>
-                    <td className="p-3 font-semibold text-gray-700">{row.risk_level || 'N/A'}</td>
-                    <td className="p-3 text-right">
-                      <button
-                        onClick={() => handleDelete(row.id)}
-                        disabled={deletingId === row.id}
-                        className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
-                        title="Delete Record"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {history.map((item) => {
+                  const isCkd = item.prediction === 'ckd';
+                  const probPct = (item.probability * 100).toFixed(0);
+                  return (
+                    <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-4 py-3.5 font-semibold text-gray-900">{item.timestamp}</td>
+                      <td className="px-4 py-3.5">
+                        <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold border ${
+                          isCkd ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                        }`}>
+                          {isCkd ? 'Higher likelihood' : 'Lower likelihood'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5 font-black text-gray-900">{probPct}%</td>
+                      <td className="px-4 py-3.5 text-gray-600 font-medium">{item.features_json ? 'XGBoost / Best Model' : 'Active Model'}</td>
+                      <td className="px-4 py-3.5 text-right">
+                        <button
+                          onClick={() => deleteHistoryRecord(item.id)}
+                          className="p-1.5 text-gray-400 hover:text-rose-600 transition-colors cursor-pointer"
+                          title="Delete Record"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="bg-white p-12 rounded-3xl border border-gray-200 text-center shadow-sm max-w-lg mx-auto space-y-3">
+          <HistoryIcon className="w-12 h-12 text-gray-300 mx-auto" />
+          <h4 className="text-base font-bold text-gray-800">No prediction history yet.</h4>
+          <p className="text-xs text-gray-500">
+            Completed AI screenings will appear here automatically with date, result, model-estimated likelihood, and model type.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

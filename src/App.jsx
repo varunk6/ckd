@@ -5,16 +5,14 @@ import Layout from './components/Layout';
 
 import Dashboard from './pages/Dashboard';
 import Prediction from './pages/Prediction';
-import Result from './pages/Result';
-import ExplainableAI from './pages/ExplainableAI';
-import DatasetAnalysis from './pages/DatasetAnalysis';
-import FeatureSelection from './pages/FeatureSelection';
-import ModelComparison from './pages/ModelComparison';
-import ModelPerformance from './pages/ModelPerformance';
-import ResearchExperiment from './pages/ResearchExperiment';
+import BloodPressure from './pages/BloodPressure';
+import KidneyHealth from './pages/KidneyHealth';
+import HealthTrends from './pages/HealthTrends';
 import History from './pages/History';
-import ResearchReport from './pages/ResearchReport';
+import ExplainableAI from './pages/ExplainableAI';
+import Research from './pages/Research';
 import About from './pages/About';
+import Result from './pages/Result';
 
 export default function App() {
   return (
@@ -23,17 +21,16 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
+            <Route path="check-health" element={<Prediction />} />
             <Route path="predict" element={<Prediction />} />
-            <Route path="result" element={<Result />} />
-            <Route path="explain" element={<ExplainableAI />} />
-            <Route path="eda" element={<DatasetAnalysis />} />
-            <Route path="features" element={<FeatureSelection />} />
-            <Route path="comparison" element={<ModelComparison />} />
-            <Route path="performance" element={<ModelPerformance />} />
-            <Route path="experiment" element={<ResearchExperiment />} />
+            <Route path="blood-pressure" element={<BloodPressure />} />
+            <Route path="kidney-health" element={<KidneyHealth />} />
+            <Route path="health-trends" element={<HealthTrends />} />
             <Route path="history" element={<History />} />
-            <Route path="report" element={<ResearchReport />} />
+            <Route path="explain" element={<ExplainableAI />} />
+            <Route path="research" element={<Research />} />
             <Route path="about" element={<About />} />
+            <Route path="result" element={<Result />} />
           </Route>
         </Routes>
       </BrowserRouter>
