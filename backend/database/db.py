@@ -3,12 +3,17 @@ import sqlite3
 import json
 from datetime import datetime
 
-DB_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(DB_DIR, "ckd_history.db")
+def get_db_path():
+    if os.environ.get("VERCEL") or not os.access(os.path.dirname(os.path.abspath(__file__)), os.W_OK):
+        d_dir = "/tmp"
+    else:
+        d_dir = os.path.dirname(os.path.abspath(__file__))
+    os.makedirs(d_dir, exist_ok=True)
+    return os.path.join(d_dir, "ckd_history.db")
 
 def init_db():
-    os.makedirs(DB_DIR, exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
+    db_path = get_db_path()
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS predictions (
@@ -75,7 +80,7 @@ def init_db():
 
 def save_prediction(age, bp, prediction, probability, risk_level, features):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
@@ -89,7 +94,7 @@ def save_prediction(age, bp, prediction, probability, risk_level, features):
 
 def get_predictions(limit=100):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM predictions ORDER BY id DESC LIMIT ?", (limit,))
@@ -100,7 +105,7 @@ def get_predictions(limit=100):
 
 def delete_prediction(prediction_id):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     cursor.execute("DELETE FROM predictions WHERE id = ?", (prediction_id,))
     deleted = cursor.rowcount > 0
@@ -110,7 +115,7 @@ def delete_prediction(prediction_id):
 
 def clear_all_predictions():
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     cursor.execute("DELETE FROM predictions")
     deleted_count = cursor.rowcount
@@ -121,7 +126,7 @@ def clear_all_predictions():
 # Blood Pressure CRUD
 def save_bp_reading(systolic, diastolic, pulse=None, date=None, time=None):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     now = datetime.now()
     date_str = date if date else now.strftime("%Y-%m-%d")
@@ -138,7 +143,7 @@ def save_bp_reading(systolic, diastolic, pulse=None, date=None, time=None):
 
 def get_bp_readings(limit=100):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM blood_pressure ORDER BY date DESC, time DESC, id DESC LIMIT ?", (limit,))
@@ -149,7 +154,7 @@ def get_bp_readings(limit=100):
 
 def delete_bp_reading(bp_id):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     cursor.execute("DELETE FROM blood_pressure WHERE id = ?", (bp_id,))
     deleted = cursor.rowcount > 0
@@ -160,7 +165,7 @@ def delete_bp_reading(bp_id):
 # Lab Results CRUD
 def save_lab_result(test_date, sc=None, bu=None, egfr=None, hemo=None, sod=None, pot=None, bgr=None, al=None, protein=None, rbc=None, wbc=None):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
@@ -187,7 +192,7 @@ def save_lab_result(test_date, sc=None, bu=None, egfr=None, hemo=None, sod=None,
 
 def get_lab_results(limit=100):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM lab_results ORDER BY test_date DESC, id DESC LIMIT ?", (limit,))
@@ -198,7 +203,7 @@ def get_lab_results(limit=100):
 
 def delete_lab_result(lab_id):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     cursor.execute("DELETE FROM lab_results WHERE id = ?", (lab_id,))
     deleted = cursor.rowcount > 0
@@ -209,7 +214,7 @@ def delete_lab_result(lab_id):
 # Wearable Logs CRUD
 def save_wearable_log(log_date, steps=None, active_minutes=None, calories=None, sedentary_alerts=None, heart_rate=None, min_hr=None, max_hr=None, hrv=None, sleep_duration=None, awake_duration=None, sleep_score=None, stress_level=None):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
@@ -237,7 +242,7 @@ def save_wearable_log(log_date, steps=None, active_minutes=None, calories=None, 
 
 def get_wearable_logs(limit=100):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM wearable_logs ORDER BY log_date DESC, id DESC LIMIT ?", (limit,))
@@ -248,7 +253,7 @@ def get_wearable_logs(limit=100):
 
 def delete_wearable_log(log_id):
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     cursor.execute("DELETE FROM wearable_logs WHERE id = ?", (log_id,))
     deleted = cursor.rowcount > 0
@@ -272,7 +277,7 @@ def get_health_summary():
 
 def get_statistics():
     init_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM predictions")
     total = cursor.fetchone()[0]
