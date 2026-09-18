@@ -55,10 +55,27 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# CORS Middleware
+# Environment-based CORS origins configuration
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS") or os.getenv("FRONTEND_URL")
+allowed_origins = [
+    "https://ckd-qibu.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000"
+]
+
+if allowed_origins_env:
+    for origin in allowed_origins_env.split(","):
+        origin = origin.strip()
+        if origin and origin not in allowed_origins:
+            allowed_origins.append(origin)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -342,6 +359,7 @@ def predict_ckd(payload: CKDInputSchema):
             probability=round(probability_val, 4),
             probability_percentage=round(probability_val * 100, 1),
             risk_level=risk_level,
+            model_name=model_metadata.get("best_model_name", "Trained Model"),
             message=msg,
             disclaimer=disclaimer,
             shap_explanation=shap_exp,

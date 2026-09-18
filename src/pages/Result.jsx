@@ -15,7 +15,7 @@ import PageHeader from '../components/PageHeader';
 import { usePrediction } from '../context/PredictionContext';
 
 export default function Result() {
-  const { lastPrediction } = usePrediction();
+  const { lastPrediction, modelInfo } = usePrediction();
   const navigate = useNavigate();
 
   if (!lastPrediction) {
@@ -97,7 +97,7 @@ export default function Result() {
               />
             </div>
             <div className="text-[11px] text-gray-600 font-semibold pt-1 border-t border-gray-100">
-              Model Used: <strong className="text-gray-900">{lastPrediction.model_name || 'XGBoost / Best Model'}</strong>
+              Model Used: <strong className="text-gray-900">{lastPrediction.model_name || modelInfo?.best_model_name || 'Trained Model'}</strong>
             </div>
           </div>
         </div>

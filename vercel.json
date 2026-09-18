@@ -1,72 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/health",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/dataset-info",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/model-info",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/metrics",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/predict",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/explain",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/predictions",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/feature-selection",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/blood-pressure",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/lab-results",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/wearable-logs",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/health-summary",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/eda/:path*",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/models/:path*",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/experiment/:path*",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/report/:path*",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "/api/index.py"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

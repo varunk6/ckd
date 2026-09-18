@@ -101,10 +101,10 @@ export default function Sidebar() {
           </span>
           {modelLoaded ? (
             <span className="font-semibold text-gray-800 bg-orange-100 text-[#FF6B00] px-1.5 py-0.5 rounded text-[11px]">
-              {modelInfo?.best_model_name || 'Active'}
+              {modelInfo?.best_model_name || 'Loaded'}
             </span>
           ) : (
-            <span className="font-semibold text-rose-600">Unloaded</span>
+            <span className="font-semibold text-rose-600">Unavailable</span>
           )}
         </div>
 

@@ -34,6 +34,7 @@ class CKDPredictionResponse(BaseModel):
     probability: float # e.g. 0.87
     probability_percentage: float # e.g. 87.0
     risk_level: str # 'Low', 'Moderate', 'High'
+    model_name: Optional[str] = None
     message: str
     disclaimer: str
     shap_explanation: Optional[Dict[str, Any]] = None
