@@ -129,13 +129,48 @@ def test_health_modules_endpoints():
     client.delete(f"/lab-results/{lab_id}")
     client.delete(f"/wearable-logs/{wear_id}")
 
+def test_features_and_shap_endpoints():
+    r1 = client.get("/features")
+    assert r1.status_code == 200
+    d1 = r1.json()
+    assert d1["total_attributes"] == 24
+    assert len(d1["top_13_attributes"]) == 13
+
+    r2 = client.get("/feature-selection/shap")
+    assert r2.status_code == 200
+    d2 = r2.json()
+    assert "ranked_attributes" in d2
+    assert len(d2["ranked_attributes"]) == 24
+    assert len(d2["top_13_attributes"]) == 13
+
+def test_confusion_matrix_and_roc_endpoints():
+    r1 = client.get("/models/confusion-matrix")
+    assert r1.status_code == 200
+    d1 = r1.json()
+    assert len(d1) >= 5
+
+    r1_single = client.get("/models/confusion-matrix?model=Logistic%20Regression")
+    assert r1_single.status_code == 200
+    assert "confusion_matrix" in r1_single.json()
+
+    r2 = client.get("/models/roc-curve")
+    assert r2.status_code == 200
+    d2 = r2.json()
+    assert len(d2) >= 5
+
+    r2_single = client.get("/models/roc-curve?model=Random%20Forest")
+    assert r2_single.status_code == 200
+    assert "roc_curve" in r2_single.json()
+
 if __name__ == "__main__":
     setup_module(None)
     test_health_endpoint()
     test_dataset_info_endpoint()
     test_eda_endpoints()
     test_feature_selection_endpoint()
+    test_features_and_shap_endpoints()
     test_models_comparison_endpoint()
+    test_confusion_matrix_and_roc_endpoints()
     test_predict_and_explain_endpoint()
     test_report_generate_endpoint()
     test_health_modules_endpoints()

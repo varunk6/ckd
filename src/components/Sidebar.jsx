@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import {
   Home,
   Stethoscope,
+  BarChart3,
   HeartPulse,
   Activity,
   TrendingUp,
@@ -23,6 +24,7 @@ export default function Sidebar() {
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
     { name: 'Check Health', path: '/check-health', icon: Stethoscope },
+    { name: 'ML Analysis', path: '/ml-analysis', icon: BarChart3 },
     { name: 'Blood Pressure', path: '/blood-pressure', icon: HeartPulse },
     { name: 'Kidney Health', path: '/kidney-health', icon: Activity },
     { name: 'Health Trends', path: '/health-trends', icon: TrendingUp },
@@ -84,11 +86,11 @@ export default function Sidebar() {
           </span>
           {apiConnected ? (
             <span className="inline-flex items-center gap-1 font-semibold text-emerald-600">
-              <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Connected
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Backend Connected
             </span>
           ) : (
             <span className="inline-flex items-center gap-1 font-semibold text-rose-600">
-              <XCircle className="w-3 h-3 text-rose-500" /> Disconnected
+              <span className="w-2 h-2 rounded-full bg-rose-500"></span> Backend Disconnected
             </span>
           )}
         </div>

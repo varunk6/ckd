@@ -53,6 +53,16 @@ export const api = {
   },
 
   // Feature Selection & Model Comparison
+  getFeatures: async () => {
+    const res = await apiClient.get('/features');
+    return res.data;
+  },
+
+  getShapFeatureSelection: async () => {
+    const res = await apiClient.get('/feature-selection/shap');
+    return res.data;
+  },
+
   getFeatureSelection: async () => {
     const res = await apiClient.get('/feature-selection');
     return res.data;
@@ -60,6 +70,18 @@ export const api = {
 
   getModelsComparison: async () => {
     const res = await apiClient.get('/models/comparison');
+    return res.data;
+  },
+
+  getConfusionMatrix: async (model) => {
+    const url = model ? `/models/confusion-matrix?model=${encodeURIComponent(model)}` : '/models/confusion-matrix';
+    const res = await apiClient.get(url);
+    return res.data;
+  },
+
+  getRocCurve: async (model) => {
+    const url = model ? `/models/roc-curve?model=${encodeURIComponent(model)}` : '/models/roc-curve';
+    const res = await apiClient.get(url);
     return res.data;
   },
 

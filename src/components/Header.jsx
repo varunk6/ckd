@@ -4,7 +4,7 @@ import { Activity, ShieldAlert } from 'lucide-react';
 import { usePrediction } from '../context/PredictionContext';
 
 export const Header = () => {
-  const { apiOnline } = usePrediction();
+  const { apiConnected } = usePrediction();
   const navigate = useNavigate();
 
   return (
@@ -24,11 +24,11 @@ export const Header = () => {
         <div className="flex items-center gap-2 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#FAFAFA] border border-[#E4E4E7]">
           <span
             className={`w-2 h-2 rounded-full ${
-              apiOnline ? 'bg-emerald-500' : 'bg-rose-500'
+              apiConnected ? 'bg-emerald-500' : 'bg-rose-500'
             }`}
           />
-          <span className={apiOnline ? 'text-emerald-700' : 'text-rose-600'}>
-            {apiOnline ? 'Backend Connected' : 'Backend Disconnected'}
+          <span className={apiConnected ? 'text-emerald-700 font-semibold' : 'text-rose-600 font-semibold'}>
+            {apiConnected ? '● Backend Connected' : '● Backend Disconnected'}
           </span>
         </div>
 

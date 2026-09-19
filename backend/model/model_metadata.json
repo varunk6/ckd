@@ -1,7 +1,13 @@
 {
-  "project_title": "Explainable Multi-Model Machine Learning Framework for Early Chronic Kidney Disease Prediction",
-  "timestamp": "2026-09-12 10:14:16",
-  "best_model_name": "Naive Bayes",
+  "project_title": "Machine Learning-Based Early Detection of Chronic Kidney Disease (CKD)",
+  "guide": "Ms. Janani .D \u2014 AP/IT",
+  "team": [
+    "Arunkumar .K \u2014 727624BIT105",
+    "Ritheekvarshan .S \u2014 727624BIT001",
+    "Varun.K \u2014 727624BIT021"
+  ],
+  "timestamp": "2026-09-19 09:28:17",
+  "best_model_name": "Logistic Regression",
   "class_balancing_method": "smote",
   "class_balancing_label": "SMOTE (Synthetic Minority Over-sampling Technique)",
   "cv_folds": 5,
@@ -9,23 +15,29 @@
   "total_features": 24,
   "transformed_features_count": 34,
   "best_model_metrics": {
-    "model_name": "Naive Bayes",
-    "accuracy": 1.0,
+    "model_name": "Logistic Regression",
+    "accuracy": 0.9833,
     "precision": 1.0,
-    "recall": 1.0,
-    "f1_score": 1.0,
+    "recall": 0.9667,
+    "f1_score": 0.9818,
     "roc_auc": 1.0,
-    "training_time_sec": 0.086,
+    "training_time_sec": 0.059,
     "confusion_matrix": {
-      "tp": 30,
+      "tp": 29,
       "tn": 30,
       "fp": 0,
-      "fn": 0
+      "fn": 1,
+      "sensitivity": 0.9667,
+      "specificity": 1.0
     },
     "roc_curve": [
       {
         "fpr": 0.0,
         "tpr": 0.0
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 0.033
       },
       {
         "fpr": 0.0,
@@ -39,80 +51,20 @@
   },
   "all_models_comparison": [
     {
-      "model_name": "Logistic Regression",
-      "accuracy": 0.9833,
-      "precision": 1.0,
-      "recall": 0.9667,
-      "f1_score": 0.9818,
-      "roc_auc": 1.0,
-      "training_time_sec": 0.059,
-      "confusion_matrix": {
-        "tp": 29,
-        "tn": 30,
-        "fp": 0,
-        "fn": 1
-      },
-      "roc_curve": [
-        {
-          "fpr": 0.0,
-          "tpr": 0.0
-        },
-        {
-          "fpr": 0.0,
-          "tpr": 0.033
-        },
-        {
-          "fpr": 0.0,
-          "tpr": 1.0
-        },
-        {
-          "fpr": 1.0,
-          "tpr": 1.0
-        }
-      ]
-    },
-    {
-      "model_name": "Decision Tree",
-      "accuracy": 0.9333,
-      "precision": 0.9667,
-      "recall": 0.9,
-      "f1_score": 0.9303,
-      "roc_auc": 0.9333,
-      "training_time_sec": 0.041,
-      "confusion_matrix": {
-        "tp": 27,
-        "tn": 29,
-        "fp": 1,
-        "fn": 3
-      },
-      "roc_curve": [
-        {
-          "fpr": 0.0,
-          "tpr": 0.0
-        },
-        {
-          "fpr": 0.033,
-          "tpr": 0.9
-        },
-        {
-          "fpr": 1.0,
-          "tpr": 1.0
-        }
-      ]
-    },
-    {
       "model_name": "Random Forest",
       "accuracy": 0.9667,
       "precision": 1.0,
       "recall": 0.9333,
       "f1_score": 0.96,
       "roc_auc": 1.0,
-      "training_time_sec": 0.625,
+      "training_time_sec": 0.411,
       "confusion_matrix": {
         "tp": 28,
         "tn": 30,
         "fp": 0,
-        "fn": 2
+        "fn": 2,
+        "sensitivity": 0.9333,
+        "specificity": 1.0
       },
       "roc_curve": [
         {
@@ -125,7 +77,7 @@
         },
         {
           "fpr": 0.0,
-          "tpr": 0.367
+          "tpr": 0.333
         },
         {
           "fpr": 0.0,
@@ -160,23 +112,15 @@
           "tpr": 1.0
         },
         {
-          "fpr": 0.067,
-          "tpr": 1.0
-        },
-        {
-          "fpr": 0.133,
-          "tpr": 1.0
-        },
-        {
-          "fpr": 0.4,
-          "tpr": 1.0
-        },
-        {
-          "fpr": 0.467,
+          "fpr": 0.5,
           "tpr": 1.0
         },
         {
           "fpr": 0.6,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.633,
           "tpr": 1.0
         },
         {
@@ -194,18 +138,20 @@
       ]
     },
     {
-      "model_name": "SVM",
-      "accuracy": 0.9833,
-      "precision": 1.0,
-      "recall": 0.9667,
-      "f1_score": 0.9818,
-      "roc_auc": 1.0,
-      "training_time_sec": 0.117,
+      "model_name": "Gradient Boosting",
+      "accuracy": 0.9167,
+      "precision": 0.9381,
+      "recall": 0.9,
+      "f1_score": 0.9149,
+      "roc_auc": 0.9778,
+      "training_time_sec": 0.259,
       "confusion_matrix": {
-        "tp": 29,
-        "tn": 30,
-        "fp": 0,
-        "fn": 1
+        "tp": 27,
+        "tn": 28,
+        "fp": 2,
+        "fn": 3,
+        "sensitivity": 0.9,
+        "specificity": 0.9333
       },
       "roc_curve": [
         {
@@ -214,88 +160,26 @@
         },
         {
           "fpr": 0.0,
-          "tpr": 0.033
-        },
-        {
-          "fpr": 0.0,
-          "tpr": 0.967
+          "tpr": 0.867
         },
         {
           "fpr": 0.033,
-          "tpr": 0.967
+          "tpr": 0.867
         },
         {
           "fpr": 0.033,
-          "tpr": 1.0
+          "tpr": 0.9
         },
         {
-          "fpr": 1.0,
-          "tpr": 1.0
-        }
-      ]
-    },
-    {
-      "model_name": "KNN",
-      "accuracy": 0.8333,
-      "precision": 1.0,
-      "recall": 0.6667,
-      "f1_score": 0.7836,
-      "roc_auc": 0.9833,
-      "training_time_sec": 4.348,
-      "confusion_matrix": {
-        "tp": 20,
-        "tn": 30,
-        "fp": 0,
-        "fn": 10
-      },
-      "roc_curve": [
-        {
-          "fpr": 0.0,
-          "tpr": 0.0
+          "fpr": 0.067,
+          "tpr": 0.9
         },
         {
-          "fpr": 0.0,
-          "tpr": 0.533
-        },
-        {
-          "fpr": 0.0,
-          "tpr": 0.667
-        },
-        {
-          "fpr": 0.0,
-          "tpr": 0.767
-        },
-        {
-          "fpr": 0.0,
+          "fpr": 0.067,
           "tpr": 0.967
         },
         {
-          "fpr": 1.0,
-          "tpr": 1.0
-        }
-      ]
-    },
-    {
-      "model_name": "Naive Bayes",
-      "accuracy": 1.0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0,
-      "roc_auc": 1.0,
-      "training_time_sec": 0.086,
-      "confusion_matrix": {
-        "tp": 30,
-        "tn": 30,
-        "fp": 0,
-        "fn": 0
-      },
-      "roc_curve": [
-        {
-          "fpr": 0.0,
-          "tpr": 0.0
-        },
-        {
-          "fpr": 0.0,
+          "fpr": 0.667,
           "tpr": 1.0
         },
         {
@@ -311,12 +195,14 @@
       "recall": 0.9,
       "f1_score": 0.911,
       "roc_auc": 1.0,
-      "training_time_sec": 2.405,
+      "training_time_sec": 2.256,
       "confusion_matrix": {
         "tp": 27,
         "tn": 28,
         "fp": 2,
-        "fn": 3
+        "fn": 3,
+        "sensitivity": 0.9,
+        "specificity": 0.9333
       },
       "roc_curve": [
         {
@@ -398,18 +284,55 @@
       ]
     },
     {
-      "model_name": "Neural Network",
+      "model_name": "Logistic Regression",
       "accuracy": 0.9833,
       "precision": 1.0,
       "recall": 0.9667,
       "f1_score": 0.9818,
       "roc_auc": 1.0,
-      "training_time_sec": 0.519,
+      "training_time_sec": 0.059,
       "confusion_matrix": {
         "tp": 29,
         "tn": 30,
         "fp": 0,
-        "fn": 1
+        "fn": 1,
+        "sensitivity": 0.9667,
+        "specificity": 1.0
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.033
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ]
+    },
+    {
+      "model_name": "Support Vector Machine",
+      "accuracy": 0.9833,
+      "precision": 1.0,
+      "recall": 0.9667,
+      "f1_score": 0.9818,
+      "roc_auc": 1.0,
+      "training_time_sec": 0.058,
+      "confusion_matrix": {
+        "tp": 29,
+        "tn": 30,
+        "fp": 0,
+        "fn": 1,
+        "sensitivity": 0.9667,
+        "specificity": 1.0
       },
       "roc_curve": [
         {
@@ -439,22 +362,610 @@
       ]
     }
   ],
-  "top_features": [
-    "hemo",
-    "htn_yes",
+  "shap_analysis": {
+    "ranked_attributes": [
+      {
+        "attribute": "al",
+        "label": "Albumin",
+        "type": "Numerical",
+        "mean_abs_shap": 1.0003,
+        "rank": 1,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "sg",
+        "label": "Specific Gravity",
+        "type": "Numerical",
+        "mean_abs_shap": 0.9,
+        "rank": 2,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "hemo",
+        "label": "Hemoglobin",
+        "type": "Numerical",
+        "mean_abs_shap": 0.6558,
+        "rank": 3,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "htn",
+        "label": "Hypertension",
+        "type": "Categorical",
+        "mean_abs_shap": 0.6498,
+        "rank": 4,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "dm",
+        "label": "Diabetes Mellitus",
+        "type": "Categorical",
+        "mean_abs_shap": 0.5702,
+        "rank": 5,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "pcv",
+        "label": "Packed Cell Volume",
+        "type": "Numerical",
+        "mean_abs_shap": 0.488,
+        "rank": 6,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "rc",
+        "label": "Red Blood Cell Count",
+        "type": "Numerical",
+        "mean_abs_shap": 0.4083,
+        "rank": 7,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "su",
+        "label": "Sugar",
+        "type": "Numerical",
+        "mean_abs_shap": 0.4069,
+        "rank": 8,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "bu",
+        "label": "Blood Urea",
+        "type": "Numerical",
+        "mean_abs_shap": 0.345,
+        "rank": 9,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "appet",
+        "label": "Appetite",
+        "type": "Categorical",
+        "mean_abs_shap": 0.2627,
+        "rank": 10,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "sc",
+        "label": "Serum Creatinine",
+        "type": "Numerical",
+        "mean_abs_shap": 0.1396,
+        "rank": 11,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "pot",
+        "label": "Potassium",
+        "type": "Numerical",
+        "mean_abs_shap": 0.1343,
+        "rank": 12,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "ane",
+        "label": "Anemia",
+        "type": "Categorical",
+        "mean_abs_shap": 0.1251,
+        "rank": 13,
+        "is_selected_top_13": true
+      },
+      {
+        "attribute": "bgr",
+        "label": "Blood Glucose Random",
+        "type": "Numerical",
+        "mean_abs_shap": 0.1221,
+        "rank": 14,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "sod",
+        "label": "Sodium",
+        "type": "Numerical",
+        "mean_abs_shap": 0.0892,
+        "rank": 15,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "cad",
+        "label": "Coronary Artery Disease",
+        "type": "Categorical",
+        "mean_abs_shap": 0.065,
+        "rank": 16,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "pc",
+        "label": "Pus Cell",
+        "type": "Categorical",
+        "mean_abs_shap": 0.0523,
+        "rank": 17,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "bp",
+        "label": "Blood Pressure",
+        "type": "Numerical",
+        "mean_abs_shap": 0.0366,
+        "rank": 18,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "age",
+        "label": "Age",
+        "type": "Numerical",
+        "mean_abs_shap": 0.0357,
+        "rank": 19,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "pcc",
+        "label": "Pus Cell Clumps",
+        "type": "Categorical",
+        "mean_abs_shap": 0.035,
+        "rank": 20,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "pe",
+        "label": "Pedal Edema",
+        "type": "Categorical",
+        "mean_abs_shap": 0.0161,
+        "rank": 21,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "rbc",
+        "label": "Red Blood Cells",
+        "type": "Categorical",
+        "mean_abs_shap": 0.0131,
+        "rank": 22,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "wc",
+        "label": "White Blood Cell Count",
+        "type": "Numerical",
+        "mean_abs_shap": 0.0106,
+        "rank": 23,
+        "is_selected_top_13": false
+      },
+      {
+        "attribute": "ba",
+        "label": "Bacteria",
+        "type": "Categorical",
+        "mean_abs_shap": 0.0003,
+        "rank": 24,
+        "is_selected_top_13": false
+      }
+    ],
+    "top_13_attributes": [
+      "al",
+      "sg",
+      "hemo",
+      "htn",
+      "dm",
+      "pcv",
+      "rc",
+      "su",
+      "bu",
+      "appet",
+      "sc",
+      "pot",
+      "ane"
+    ],
+    "top_13_labels": [
+      "Albumin",
+      "Specific Gravity",
+      "Hemoglobin",
+      "Hypertension",
+      "Diabetes Mellitus",
+      "Packed Cell Volume",
+      "Red Blood Cell Count",
+      "Sugar",
+      "Blood Urea",
+      "Appetite",
+      "Serum Creatinine",
+      "Potassium",
+      "Anemia"
+    ],
+    "total_attributes": 24,
+    "selected_count": 13,
+    "transformed_features_shap": [
+      {
+        "feature": "al",
+        "mean_abs_shap": 1.0003
+      },
+      {
+        "feature": "sg",
+        "mean_abs_shap": 0.9
+      },
+      {
+        "feature": "hemo",
+        "mean_abs_shap": 0.6558
+      },
+      {
+        "feature": "pcv",
+        "mean_abs_shap": 0.488
+      },
+      {
+        "feature": "rc",
+        "mean_abs_shap": 0.4083
+      },
+      {
+        "feature": "su",
+        "mean_abs_shap": 0.4069
+      },
+      {
+        "feature": "bu",
+        "mean_abs_shap": 0.345
+      },
+      {
+        "feature": "htn_no",
+        "mean_abs_shap": 0.325
+      },
+      {
+        "feature": "htn_yes",
+        "mean_abs_shap": 0.3248
+      },
+      {
+        "feature": "dm_no",
+        "mean_abs_shap": 0.2852
+      },
+      {
+        "feature": "dm_yes",
+        "mean_abs_shap": 0.285
+      },
+      {
+        "feature": "sc",
+        "mean_abs_shap": 0.1396
+      },
+      {
+        "feature": "pot",
+        "mean_abs_shap": 0.1343
+      },
+      {
+        "feature": "appet_good",
+        "mean_abs_shap": 0.1314
+      },
+      {
+        "feature": "appet_poor",
+        "mean_abs_shap": 0.1313
+      },
+      {
+        "feature": "bgr",
+        "mean_abs_shap": 0.1221
+      },
+      {
+        "feature": "sod",
+        "mean_abs_shap": 0.0892
+      },
+      {
+        "feature": "ane_no",
+        "mean_abs_shap": 0.0626
+      },
+      {
+        "feature": "ane_yes",
+        "mean_abs_shap": 0.0625
+      },
+      {
+        "feature": "bp",
+        "mean_abs_shap": 0.0366
+      },
+      {
+        "feature": "age",
+        "mean_abs_shap": 0.0357
+      },
+      {
+        "feature": "cad_no",
+        "mean_abs_shap": 0.0325
+      },
+      {
+        "feature": "cad_yes",
+        "mean_abs_shap": 0.0324
+      },
+      {
+        "feature": "pc_normal",
+        "mean_abs_shap": 0.0262
+      },
+      {
+        "feature": "pc_abnormal",
+        "mean_abs_shap": 0.0261
+      },
+      {
+        "feature": "pcc_notpresent",
+        "mean_abs_shap": 0.0175
+      },
+      {
+        "feature": "pcc_present",
+        "mean_abs_shap": 0.0174
+      },
+      {
+        "feature": "wc",
+        "mean_abs_shap": 0.0106
+      },
+      {
+        "feature": "pe_no",
+        "mean_abs_shap": 0.0081
+      },
+      {
+        "feature": "pe_yes",
+        "mean_abs_shap": 0.008
+      },
+      {
+        "feature": "rbc_normal",
+        "mean_abs_shap": 0.0066
+      },
+      {
+        "feature": "rbc_abnormal",
+        "mean_abs_shap": 0.0065
+      },
+      {
+        "feature": "ba_notpresent",
+        "mean_abs_shap": 0.0001
+      },
+      {
+        "feature": "ba_present",
+        "mean_abs_shap": 0.0001
+      }
+    ]
+  },
+  "top_13_attributes": [
     "al",
-    "dm_yes",
-    "htn_no",
     "sg",
+    "hemo",
+    "htn",
+    "dm",
     "pcv",
     "rc",
-    "dm_no",
-    "pc_abnormal",
-    "appet_poor",
+    "su",
     "bu",
+    "appet",
     "sc",
-    "pe_yes",
-    "pc_normal"
+    "pot",
+    "ane"
+  ],
+  "top_13_labels": [
+    "Albumin",
+    "Specific Gravity",
+    "Hemoglobin",
+    "Hypertension",
+    "Diabetes Mellitus",
+    "Packed Cell Volume",
+    "Red Blood Cell Count",
+    "Sugar",
+    "Blood Urea",
+    "Appetite",
+    "Serum Creatinine",
+    "Potassium",
+    "Anemia"
+  ],
+  "all_24_attributes": [
+    {
+      "attribute": "al",
+      "label": "Albumin",
+      "type": "Numerical",
+      "mean_abs_shap": 1.0003,
+      "rank": 1,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "sg",
+      "label": "Specific Gravity",
+      "type": "Numerical",
+      "mean_abs_shap": 0.9,
+      "rank": 2,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "hemo",
+      "label": "Hemoglobin",
+      "type": "Numerical",
+      "mean_abs_shap": 0.6558,
+      "rank": 3,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "htn",
+      "label": "Hypertension",
+      "type": "Categorical",
+      "mean_abs_shap": 0.6498,
+      "rank": 4,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "dm",
+      "label": "Diabetes Mellitus",
+      "type": "Categorical",
+      "mean_abs_shap": 0.5702,
+      "rank": 5,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "pcv",
+      "label": "Packed Cell Volume",
+      "type": "Numerical",
+      "mean_abs_shap": 0.488,
+      "rank": 6,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "rc",
+      "label": "Red Blood Cell Count",
+      "type": "Numerical",
+      "mean_abs_shap": 0.4083,
+      "rank": 7,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "su",
+      "label": "Sugar",
+      "type": "Numerical",
+      "mean_abs_shap": 0.4069,
+      "rank": 8,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "bu",
+      "label": "Blood Urea",
+      "type": "Numerical",
+      "mean_abs_shap": 0.345,
+      "rank": 9,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "appet",
+      "label": "Appetite",
+      "type": "Categorical",
+      "mean_abs_shap": 0.2627,
+      "rank": 10,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "sc",
+      "label": "Serum Creatinine",
+      "type": "Numerical",
+      "mean_abs_shap": 0.1396,
+      "rank": 11,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "pot",
+      "label": "Potassium",
+      "type": "Numerical",
+      "mean_abs_shap": 0.1343,
+      "rank": 12,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "ane",
+      "label": "Anemia",
+      "type": "Categorical",
+      "mean_abs_shap": 0.1251,
+      "rank": 13,
+      "is_selected_top_13": true
+    },
+    {
+      "attribute": "bgr",
+      "label": "Blood Glucose Random",
+      "type": "Numerical",
+      "mean_abs_shap": 0.1221,
+      "rank": 14,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "sod",
+      "label": "Sodium",
+      "type": "Numerical",
+      "mean_abs_shap": 0.0892,
+      "rank": 15,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "cad",
+      "label": "Coronary Artery Disease",
+      "type": "Categorical",
+      "mean_abs_shap": 0.065,
+      "rank": 16,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "pc",
+      "label": "Pus Cell",
+      "type": "Categorical",
+      "mean_abs_shap": 0.0523,
+      "rank": 17,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "bp",
+      "label": "Blood Pressure",
+      "type": "Numerical",
+      "mean_abs_shap": 0.0366,
+      "rank": 18,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "age",
+      "label": "Age",
+      "type": "Numerical",
+      "mean_abs_shap": 0.0357,
+      "rank": 19,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "pcc",
+      "label": "Pus Cell Clumps",
+      "type": "Categorical",
+      "mean_abs_shap": 0.035,
+      "rank": 20,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "pe",
+      "label": "Pedal Edema",
+      "type": "Categorical",
+      "mean_abs_shap": 0.0161,
+      "rank": 21,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "rbc",
+      "label": "Red Blood Cells",
+      "type": "Categorical",
+      "mean_abs_shap": 0.0131,
+      "rank": 22,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "wc",
+      "label": "White Blood Cell Count",
+      "type": "Numerical",
+      "mean_abs_shap": 0.0106,
+      "rank": 23,
+      "is_selected_top_13": false
+    },
+    {
+      "attribute": "ba",
+      "label": "Bacteria",
+      "type": "Categorical",
+      "mean_abs_shap": 0.0003,
+      "rank": 24,
+      "is_selected_top_13": false
+    }
+  ],
+  "top_features": [
+    "al",
+    "sg",
+    "hemo",
+    "htn",
+    "dm",
+    "pcv",
+    "rc",
+    "su",
+    "bu",
+    "appet",
+    "sc",
+    "pot",
+    "ane"
   ],
   "feature_selection_summary": [
     {

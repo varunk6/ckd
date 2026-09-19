@@ -170,9 +170,126 @@ def health_check():
 def dataset_info():
     try:
         _, X, y, metadata = load_and_clean_dataset()
-        return metadata
+        class_dist = metadata.get("class_distribution", {})
+        return {
+            "dataset_name": "UCI Chronic Kidney Disease Dataset",
+            "description": "The dataset contains clinical attributes used to identify CKD and non-CKD cases.",
+            "total_records": metadata.get("total_records", len(y)),
+            "clinical_attributes_count": 24,
+            "total_features": 24,
+            "ckd_records": class_dist.get("ckd", int((y == 1).sum())),
+            "non_ckd_records": class_dist.get("notckd", int((y == 0).sum())),
+            "numeric_features_count": len(NUMERIC_COLS),
+            "categorical_features_count": len(CATEGORICAL_COLS),
+            "numeric_features": NUMERIC_COLS,
+            "categorical_features": CATEGORICAL_COLS,
+            "missing_summary": metadata.get("missing_summary", {}),
+            "missing_percentage": metadata.get("missing_percentage", {}),
+            "class_distribution": class_dist
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/features")
+def get_features_catalog():
+    try:
+        from ml.xai import CLINICAL_ATTRIBUTE_LABELS
+        ranked = model_metadata.get("all_24_attributes", [])
+        top_13 = model_metadata.get("top_13_attributes", [])
+
+        if not ranked:
+            # Build catalog from definitions if experiment metadata is empty
+            catalog = []
+            for col in NUMERIC_COLS:
+                catalog.append({
+                    "attribute": col,
+                    "label": CLINICAL_ATTRIBUTE_LABELS.get(col, col),
+                    "type": "Numerical",
+                    "is_selected_top_13": col in top_13
+                })
+            for col in CATEGORICAL_COLS:
+                catalog.append({
+                    "attribute": col,
+                    "label": CLINICAL_ATTRIBUTE_LABELS.get(col, col),
+                    "type": "Categorical",
+                    "is_selected_top_13": col in top_13
+                })
+        else:
+            catalog = ranked
+
+        return {
+            "total_attributes": 24,
+            "selected_count": len(top_13),
+            "top_13_attributes": top_13,
+            "top_13_labels": model_metadata.get("top_13_labels", []),
+            "attributes": catalog
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/feature-selection/shap")
+def get_shap_feature_selection():
+    if "shap_analysis" in model_metadata:
+        return model_metadata["shap_analysis"]
+    if "all_24_attributes" in model_metadata:
+        return {
+            "ranked_attributes": model_metadata.get("all_24_attributes", []),
+            "top_13_attributes": model_metadata.get("top_13_attributes", []),
+            "top_13_labels": model_metadata.get("top_13_labels", []),
+            "total_attributes": 24,
+            "selected_count": len(model_metadata.get("top_13_attributes", []))
+        }
+    raise HTTPException(status_code=404, detail="SHAP feature selection has not been calculated yet. Run experiment first.")
+
+@app.get("/models/confusion-matrix")
+def get_confusion_matrix(model: str = None):
+    all_models = model_metadata.get("all_models_comparison", [])
+    if not all_models:
+        raise HTTPException(status_code=404, detail="No model evaluation records available.")
+    
+    if model:
+        match = next((m for m in all_models if m["model_name"].lower() == model.lower()), None)
+        if match:
+            return {
+                "model_name": match["model_name"],
+                "confusion_matrix": match["confusion_matrix"],
+                "accuracy": match["accuracy"],
+                "f1_score": match["f1_score"]
+            }
+        raise HTTPException(status_code=404, detail=f"Model '{model}' not found.")
+    
+    # Return dictionary of confusion matrices for all models
+    return {
+        m["model_name"]: {
+            "confusion_matrix": m["confusion_matrix"],
+            "accuracy": m["accuracy"],
+            "f1_score": m["f1_score"]
+        } for m in all_models
+    }
+
+@app.get("/models/roc-curve")
+def get_roc_curve(model: str = None):
+    all_models = model_metadata.get("all_models_comparison", [])
+    if not all_models:
+        raise HTTPException(status_code=404, detail="No model evaluation records available.")
+    
+    if model:
+        match = next((m for m in all_models if m["model_name"].lower() == model.lower()), None)
+        if match:
+            return {
+                "model_name": match["model_name"],
+                "roc_auc": match["roc_auc"],
+                "roc_curve": match["roc_curve"]
+            }
+        raise HTTPException(status_code=404, detail=f"Model '{model}' not found.")
+    
+    # Return all ROC curves
+    return {
+        m["model_name"]: {
+            "roc_auc": m["roc_auc"],
+            "roc_curve": m["roc_curve"]
+        } for m in all_models
+    }
 
 @app.get("/eda/class-distribution")
 def eda_class_distribution():
@@ -321,16 +438,16 @@ def predict_ckd(payload: CKDInputSchema):
 
         if pred_class == 1:
             prediction_code = "ckd"
-            label = "Chronic Kidney Disease Detected"
+            label = "Higher Likelihood of Chronic Kidney Disease"
             probability_val = prob_ckd
             risk_level = "High" if prob_ckd >= 0.70 else "Moderate"
-            msg = "The machine learning model predicts a higher likelihood of Chronic Kidney Disease based on the submitted health parameters."
+            msg = "The machine learning model estimates a higher likelihood of Chronic Kidney Disease based on the submitted clinical parameters."
         else:
             prediction_code = "notckd"
-            label = "No Chronic Kidney Disease Detected"
+            label = "Lower Likelihood of Chronic Kidney Disease"
             probability_val = prob_notckd
             risk_level = "Low"
-            msg = "The machine learning model predicts a lower likelihood of Chronic Kidney Disease based on the submitted health parameters."
+            msg = "The machine learning model estimates a lower likelihood of Chronic Kidney Disease based on the submitted clinical parameters."
 
         disclaimer = "Educational screening tool only. This prediction is not a medical diagnosis. Please consult a qualified healthcare professional for medical advice."
 

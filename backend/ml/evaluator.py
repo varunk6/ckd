@@ -97,6 +97,9 @@ def evaluate_models_cv(models, X, y, cv_folds=5, balancing_method='smote', rando
         mean_f1 = float(np.mean(f1_list))
         mean_auc = float(np.mean(auc_list))
 
+        sensitivity = round(float(tp / (tp + fn)), 4) if (tp + fn) > 0 else 0.0
+        specificity = round(float(tn / (tn + fp)), 4) if (tn + fp) > 0 else 0.0
+
         results[name] = {
             "model_name": name,
             "accuracy": round(mean_acc, 4),
@@ -109,7 +112,9 @@ def evaluate_models_cv(models, X, y, cv_folds=5, balancing_method='smote', rando
                 "tp": int(tp),
                 "tn": int(tn),
                 "fp": int(fp),
-                "fn": int(fn)
+                "fn": int(fn),
+                "sensitivity": sensitivity,
+                "specificity": specificity
             },
             "roc_curve": roc_points
         }

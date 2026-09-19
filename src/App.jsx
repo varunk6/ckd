@@ -13,6 +13,7 @@ import ExplainableAI from './pages/ExplainableAI';
 import Research from './pages/Research';
 import About from './pages/About';
 import Result from './pages/Result';
+import MLAnalysis from './pages/MLAnalysis';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="check-health" element={<Prediction />} />
             <Route path="predict" element={<Prediction />} />
+            <Route path="ml-analysis" element={<MLAnalysis />} />
             <Route path="blood-pressure" element={<BloodPressure />} />
             <Route path="kidney-health" element={<KidneyHealth />} />
             <Route path="health-trends" element={<HealthTrends />} />

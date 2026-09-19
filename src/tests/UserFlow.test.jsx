@@ -18,4 +18,13 @@ describe('CKD Predict - User Navigation Workflow', () => {
     });
     expect(await screen.findByText('Patient CKD Risk Screening')).toBeInTheDocument();
   });
+
+  test('renders ML Analysis page on /ml-analysis route', async () => {
+    window.history.pushState({}, '', '/ml-analysis');
+    await act(async () => {
+      render(<App />);
+    });
+    expect(await screen.findByText('UCI Chronic Kidney Disease Dataset')).toBeInTheDocument();
+    expect(await screen.findByText('Data Preprocessing Pipeline')).toBeInTheDocument();
+  });
 });

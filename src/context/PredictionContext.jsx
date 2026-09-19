@@ -12,6 +12,8 @@ export const PredictionProvider = ({ children }) => {
   const [modelInfo, setModelInfo] = useState(null);
   const [modelComparison, setModelComparison] = useState(null);
   const [featureSelectionData, setFeatureSelectionData] = useState(null);
+  const [shapData, setShapData] = useState(null);
+  const [featuresCatalog, setFeaturesCatalog] = useState(null);
   
   const [lastPrediction, setLastPrediction] = useState(null);
   const [history, setHistory] = useState([]);
@@ -30,11 +32,13 @@ export const PredictionProvider = ({ children }) => {
       setModelLoaded(health.model_loaded);
 
       // Load research metadata & health data
-      const [meta, info, comp, fsData, histData, bpData, labData, wearData, summaryData] = await Promise.allSettled([
+      const [meta, info, comp, fsData, shapRes, featRes, histData, bpData, labData, wearData, summaryData] = await Promise.allSettled([
         api.getDatasetInfo(),
         api.getModelInfo(),
         api.getModelsComparison(),
         api.getFeatureSelection(),
+        api.getShapFeatureSelection(),
+        api.getFeatures(),
         api.getPredictionsHistory(),
         api.getBloodPressure(),
         api.getLabResults(),
@@ -46,6 +50,8 @@ export const PredictionProvider = ({ children }) => {
       if (info.status === 'fulfilled') setModelInfo(info.value);
       if (comp.status === 'fulfilled') setModelComparison(comp.value);
       if (fsData.status === 'fulfilled') setFeatureSelectionData(fsData.value);
+      if (shapRes.status === 'fulfilled') setShapData(shapRes.value);
+      if (featRes.status === 'fulfilled') setFeaturesCatalog(featRes.value);
       if (histData.status === 'fulfilled') setHistory(histData.value);
       if (bpData.status === 'fulfilled') setBpReadings(bpData.value);
       if (labData.status === 'fulfilled') setLabResults(labData.value);
@@ -177,6 +183,8 @@ export const PredictionProvider = ({ children }) => {
       modelInfo,
       modelComparison,
       featureSelectionData,
+      shapData,
+      featuresCatalog,
       lastPrediction,
       setLastPrediction,
       history,

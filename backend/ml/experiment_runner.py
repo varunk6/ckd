@@ -11,6 +11,7 @@ from feature_selection import evaluate_feature_selection
 from balancing import apply_class_balancing
 from models import get_model_dictionary
 from evaluator import evaluate_models_cv
+from xai import compute_global_shap_importance
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL_DIR = os.path.join(BASE_DIR, "model")
@@ -65,7 +66,16 @@ def run_experiment_pipeline(
     )
     best_model_instance.fit(X_full_bal, y_full_bal)
 
-    # 7. Persist Artifacts
+    # 7. Compute Global SHAP Feature Importance across all 24 clinical attributes
+    shap_results = compute_global_shap_importance(
+        best_model_instance,
+        X_transformed,
+        feature_names,
+        NUMERIC_COLS,
+        CATEGORICAL_COLS
+    )
+
+    # 8. Persist Artifacts
     best_model_path = os.path.join(MODEL_DIR, "best_model.pkl")
     pipeline_path = os.path.join(MODEL_DIR, "preprocessing_pipeline.pkl")
     fs_path = os.path.join(MODEL_DIR, "feature_selection.pkl")
@@ -77,13 +87,19 @@ def run_experiment_pipeline(
 
     joblib.dump(best_model_instance, best_model_path)
     joblib.dump(preprocessor, pipeline_path)
-    joblib.dump(fs_results, fs_path)
+    joblib.dump(shap_results, fs_path)
 
     joblib.dump(best_model_instance, legacy_model_path)
     joblib.dump(preprocessor, legacy_prep_path)
 
     model_metadata = {
-        "project_title": "Explainable Multi-Model Machine Learning Framework for Early Chronic Kidney Disease Prediction",
+        "project_title": "Machine Learning-Based Early Detection of Chronic Kidney Disease (CKD)",
+        "guide": "Ms. Janani .D — AP/IT",
+        "team": [
+            "Arunkumar .K — 727624BIT105",
+            "Ritheekvarshan .S — 727624BIT001",
+            "Varun.K — 727624BIT021"
+        ],
         "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "best_model_name": best_model_name,
         "class_balancing_method": balancing_method,
@@ -94,7 +110,11 @@ def run_experiment_pipeline(
         "transformed_features_count": len(feature_names),
         "best_model_metrics": best_eval,
         "all_models_comparison": list(eval_results.values()),
-        "top_features": fs_results['selected_features']['composite'],
+        "shap_analysis": shap_results,
+        "top_13_attributes": shap_results["top_13_attributes"],
+        "top_13_labels": shap_results["top_13_labels"],
+        "all_24_attributes": shap_results["ranked_attributes"],
+        "top_features": shap_results["top_13_attributes"],
         "feature_selection_summary": fs_results['summary'],
         "class_distribution": metadata['class_distribution']
     }
@@ -114,6 +134,7 @@ def run_experiment_pipeline(
         "metrics": best_eval,
         "model_metadata": model_metadata,
         "all_models": list(eval_results.values()),
+        "shap_analysis": shap_results,
         "feature_selection": fs_results
     }
 

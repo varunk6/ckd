@@ -48,9 +48,15 @@ export default function Dashboard() {
     <div className="space-y-8 max-w-6xl mx-auto">
       {/* Landing Hero Section */}
       <div className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] rounded-3xl p-8 md:p-10 text-white shadow-xl space-y-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/30">
-          <Stethoscope className="w-4 h-4" />
-          Simple AI Health Screening
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/30">
+            <Stethoscope className="w-4 h-4" />
+            Simple AI Health Screening
+          </div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-emerald-400 border border-emerald-400/30">
+            <FlaskConical className="w-4 h-4 text-emerald-400" />
+            Research-Based ML Screening
+          </div>
         </div>
 
         <div className="space-y-3 max-w-3xl">
@@ -74,11 +80,11 @@ export default function Dashboard() {
           </button>
 
           <button
-            onClick={() => navigate('/history')}
+            onClick={() => navigate('/ml-analysis')}
             className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/20 transition-all duration-150 cursor-pointer flex items-center gap-2"
           >
-            <History className="w-5 h-5" />
-            <span>View Health History</span>
+            <BrainCircuit className="w-5 h-5 text-[#FF6B00]" />
+            <span>Review 2 ML Analysis</span>
           </button>
         </div>
       </div>
@@ -151,32 +157,42 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Simple 3-Step Process Explanation */}
+      {/* Clear 5-Step Section: How CKD Predict Works */}
       <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm space-y-4">
-        <h3 className="text-sm font-extrabold text-gray-900 uppercase tracking-wider">How CKD Predict Works</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] font-bold flex items-center justify-center shrink-0">1</div>
-            <div>
-              <h4 className="font-bold text-gray-900 text-sm">Enter Health Information</h4>
-              <p className="text-gray-500 mt-1">Fill out the quick 3-section form with basic info, blood/kidney test numbers, and existing conditions.</p>
-            </div>
+        <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+          <h3 className="text-sm font-extrabold text-gray-900 uppercase tracking-wider">How CKD Predict Works</h3>
+          <span className="text-xs font-bold text-[#FF6B00]">Research Screening Workflow</span>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 text-xs">
+          <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-1.5">
+            <div className="w-7 h-7 rounded-full bg-orange-100 text-[#FF6B00] font-black flex items-center justify-center">1</div>
+            <h4 className="font-extrabold text-gray-900 text-xs">Enter Clinical Data</h4>
+            <p className="text-gray-500 text-[11px] leading-relaxed">Input basic demographics, blood & urine laboratory test parameters, and conditions.</p>
           </div>
 
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] font-bold flex items-center justify-center shrink-0">2</div>
-            <div>
-              <h4 className="font-bold text-gray-900 text-sm">Get AI Screening Result</h4>
-              <p className="text-gray-500 mt-1">Our machine learning model analyzes your health parameters to estimate CKD likelihood in seconds.</p>
-            </div>
+          <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-1.5">
+            <div className="w-7 h-7 rounded-full bg-orange-100 text-[#FF6B00] font-black flex items-center justify-center">2</div>
+            <h4 className="font-extrabold text-gray-900 text-xs">Preprocess Data</h4>
+            <p className="text-gray-500 text-[11px] leading-relaxed">Automated median imputation, one-hot categorical encoding, and standard scaling.</p>
           </div>
 
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] font-bold flex items-center justify-center shrink-0">3</div>
-            <div>
-              <h4 className="font-bold text-gray-900 text-sm">Understand Why & Track Trends</h4>
-              <p className="text-gray-500 mt-1">See which factors influenced your result and monitor your blood pressure and lab trends over time.</p>
-            </div>
+          <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-1.5">
+            <div className="w-7 h-7 rounded-full bg-orange-100 text-[#FF6B00] font-black flex items-center justify-center">3</div>
+            <h4 className="font-extrabold text-gray-900 text-xs">Analyze with ML</h4>
+            <p className="text-gray-500 text-[11px] leading-relaxed">Data is evaluated by the trained champion classifier evaluated via 5-Fold CV.</p>
+          </div>
+
+          <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-1.5">
+            <div className="w-7 h-7 rounded-full bg-orange-100 text-[#FF6B00] font-black flex items-center justify-center">4</div>
+            <h4 className="font-extrabold text-gray-900 text-xs">Predict CKD Risk</h4>
+            <p className="text-gray-500 text-[11px] leading-relaxed">Computes model-estimated likelihood score (Higher vs Lower likelihood).</p>
+          </div>
+
+          <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-1.5">
+            <div className="w-7 h-7 rounded-full bg-orange-100 text-[#FF6B00] font-black flex items-center justify-center">5</div>
+            <h4 className="font-extrabold text-gray-900 text-xs">Explain the Result</h4>
+            <p className="text-gray-500 text-[11px] leading-relaxed">Dynamic SHAP Explainable AI shows which clinical factors increased or decreased risk.</p>
           </div>
         </div>
       </div>
